@@ -1,0 +1,25 @@
+{
+	"name": "f95list-extractor",
+	"module": "index.ts",
+	"type": "module",
+	"devDependencies": {
+		"@types/bun": "latest"
+	},
+	"scripts": {
+		"build": "tsc",
+		"lint": "bunx @biomejs/biome lint --write .",
+		"format": "bunx @biomejs/biome format --write .",
+		"check": "bunx @biomejs/biome check --write ."
+	},
+	"peerDependencies": {
+		"typescript": "^5.0.0"
+	},
+	"config": {
+		"commitizen": {
+			"path": "cz-emoji"
+		},
+		"cz-emoji": {
+			"skipQuestions": ["scope", "body", "issues", "breaking"]
+		}
+	}
+}
