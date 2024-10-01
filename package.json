@@ -1,7 +1,19 @@
 {
 	"name": "f95list-extractor",
+	"version": "1.0.1",
 	"module": "index.ts",
 	"type": "module",
+	"private": false,
+	"author": {
+		"email": "hunteraulo@pm.me",
+		"name": "Hunteraulo"
+	},
+	"repository": {
+		"type": "git",
+		"url": "https://github.com/Hunteraulo1/f95list-extractor"
+	},
+	"license": "UNLICENSED",
+	"description": "LC Extractor Script",
 	"devDependencies": {
 		"@types/bun": "latest"
 	},
