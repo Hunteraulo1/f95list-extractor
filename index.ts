@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name         LC Script Extractor
-// @version      v1.0.0
+// @version      v1.0.1
 // @description  Extract all LC thread data
 // @author       Hunteraulo
 // @match        https://lewdcorner.com/threads/*
@@ -108,7 +108,7 @@ interface CompleteEntity {
 				image: mainEntity?.image ?? "",
 			},
 			null,
-			2,
+			0,
 		);
 
 		navigator.clipboard
