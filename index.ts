@@ -125,7 +125,7 @@ const scrapeGetTitle = (data: string): { status: string; type: string } => {
 
 	if (data.includes("Abandoned")) {
 		status = "ABANDONNÉ";
-	} else if (data.includes("Completed")) {
+	} else if (data.includes("Complete")) {
 		status = "TERMINÉ";
 	} else {
 		status = "EN COURS";
