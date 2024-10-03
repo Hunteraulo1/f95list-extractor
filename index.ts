@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name         LC Script Extractor
-// @version      v1.0.1
+// @version      v1.0.2
 // @description  Extract all LC thread data
 // @author       Hunteraulo
 // @match        https://lewdcorner.com/threads/*
