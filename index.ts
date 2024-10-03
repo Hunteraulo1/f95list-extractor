@@ -87,9 +87,9 @@ interface CompleteEntity {
 
 		const id = mainEntity?.url?.split(".")[2]?.split("/")[0] ?? "";
 
-		const versionMatch =
-			title?.match(/(?!\[)([\w\\. \(\)\']+)(?=\]\s)/gi) ?? "";
-		const version = versionMatch[versionMatch[0] === "HS" ? 1 : 0];
+		const version = document.querySelector(
+			"dl[data-field='version'] > dd",
+		)?.textContent;
 
 		title?.match(/(?!\[)([\w\\. \(\)\']+)(?=\]\s)/gi)?.[0] ?? "";
 		const name = mainEntity?.headline?.match(/([^\[]*) /)?.[1] ?? "";
