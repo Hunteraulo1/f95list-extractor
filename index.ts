@@ -82,9 +82,8 @@ interface CompleteEntity {
 			return;
 		}
 
-		const title = document.querySelector<HTMLHeadingElement>(
-			".p-title-value.flag-inserted",
-		)?.innerText;
+		const title =
+			document.querySelector<HTMLHeadingElement>(".p-title-value")?.innerText;
 
 		const id = mainEntity?.url?.split(".")[2]?.split("/")[0] ?? "";
 		const version =
