@@ -1,59 +1,4 @@
-// ==UserScript==
-// @name         LC Script Extractor
-// @version      v1.0.5
-// @description  Extract all LC thread data
-// @author       Hunteraulo
-// @match        https://lewdcorner.com/threads/*
-// @icon         https://www.google.com/s2/favicons?sz=64&domain=lewdcorner.com
-// @grant        none
-// ==/UserScript==
-
-interface MainEntity {
-	"@type": "DiscussionForumPosting";
-	"@id": string;
-	headline: string;
-	datePublished: string;
-	keywords: string;
-	url: string;
-	articleSection: string;
-	author: {
-		"@type": "Person";
-		"@id": string;
-		name: string;
-		url: string;
-	};
-	interactionStatistic: Array<{
-		"@type": "InteractionCounter";
-		interactionType: string;
-		userInteractionCount: number;
-	}>;
-	dateModified: string;
-	image: string;
-	articleBody: string;
-}
-
-interface CompleteEntity {
-	"@context": string;
-	"@type": string;
-	url: string;
-	mainEntity: MainEntity;
-	publisher: {
-		"@type": "Organization";
-		name: string;
-		alternateName: string;
-		description: string;
-		url: string;
-		logo: string;
-	};
-	name: string;
-	description: string;
-	aggregateRating: {
-		"@type": "AggregateRating";
-		ratingValue: string;
-		bestRating: string;
-		ratingCount: string;
-	};
-}
+import type { CompleteEntity } from "./types";
 
 (() => {
 	const btn = document.querySelector<HTMLButtonElement>(".fa--xf.fa-tags");
@@ -64,7 +9,7 @@ interface CompleteEntity {
 			),
 		);
 
-		const result: CompleteEntity = {} as CompleteEntity;
+		const result = {} as CompleteEntity;
 
 		for (const { textContent } of extracts) {
 			try {
