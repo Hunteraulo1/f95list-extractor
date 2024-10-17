@@ -2,13 +2,14 @@
 // ==UserScript==
 // @name         LC Tool Extractor
 // @namespace    http://tampermonkey.net/
-// @version      v1.1.0
+// @version      v1.1.1
 // @description  Extract all LC thread data
 // @author       Hunteraulo
 // @source       https://github.com/Hunteraulo1/f95list-extractor
 // @downloadURL  https://raw.githubusercontent.com/Hunteraulo1/f95list-extractor/refs/heads/main/dist/lcToolExtractor.user.js
 // @updateURL    https://raw.githubusercontent.com/Hunteraulo1/f95list-extractor/refs/heads/main/dist/lcToolExtractor.user.js
-// @match        https://lewdcorner.com/threads/*
+// @match        http*://lewdcorner.com/threads/*
+// @match        http*://*.lewdcorner.com/threads/*
 // @icon         https://www.google.com/s2/favicons?sz=64&domain=lewdcorner.com
 // @grant        none
 // ==/UserScript==
