@@ -15,7 +15,7 @@
 	"license": "UNLICENSED",
 	"description": "LC Extractor Script",
 	"devDependencies": {
-		"@types/bun": "^1.1.10",
+		"@types/bun": "^1.1.11",
 		"esbuild": "0.24.0"
 	},
 	"scripts": {
@@ -25,7 +25,7 @@
 		"check": "bunx @biomejs/biome check --write ."
 	},
 	"peerDependencies": {
-		"typescript": "^5.6.2"
+		"typescript": "^5.6.3"
 	},
 	"config": {
 		"commitizen": {
