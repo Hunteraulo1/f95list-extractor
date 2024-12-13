@@ -13,7 +13,7 @@
 		"url": "https://github.com/Hunteraulo1/f95list-extractor"
 	},
 	"license": "UNLICENSED",
-	"description": "LC Extractor Script",
+	"description": "tool extractor for F95z and LC",
 	"devDependencies": {
 		"@types/bun": "^1.1.14",
 		"esbuild": "0.24.0"

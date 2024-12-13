@@ -4,10 +4,10 @@ import { version } from "./package.json";
 
 const banner = `
 // ==UserScript==
-// @name         LC Tool Extractor
+// @name         Tool Extractor
 // @namespace    http://tampermonkey.net/
 // @version      v${version}
-// @description  Extract all LC thread data
+// @description  Extract all LC/F95z thread data
 // @author       Hunteraulo
 // @source       https://github.com/Hunteraulo1/f95list-extractor
 // @downloadURL  https://raw.githubusercontent.com/Hunteraulo1/f95list-extractor/refs/heads/main/dist/lcToolExtractor.user.js
@@ -28,7 +28,7 @@ build({
 	minifyWhitespace: true,
 	sourcemap: false,
 	target: "esNext",
-	outfile: "dist/lcToolExtractor.user.js",
+	outfile: "dist/toolExtractor.user.js",
 	banner: {
 		js: banner,
 	},
