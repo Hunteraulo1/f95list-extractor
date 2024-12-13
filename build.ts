@@ -10,8 +10,8 @@ const banner = `
 // @description  Extract all LC/F95z thread data
 // @author       Hunteraulo
 // @source       https://github.com/Hunteraulo1/f95list-extractor
-// @downloadURL  https://raw.githubusercontent.com/Hunteraulo1/f95list-extractor/refs/heads/main/dist/lcToolExtractor.user.js
-// @updateURL    https://raw.githubusercontent.com/Hunteraulo1/f95list-extractor/refs/heads/main/dist/lcToolExtractor.user.js
+// @downloadURL  https://github.com/Hunteraulo1/f95list-extractor/raw/refs/heads/main/dist/toolExtractor.user.js
+// @updateURL    https://github.com/Hunteraulo1/f95list-extractor/raw/refs/heads/main/dist/toolExtractor.user.js
 // @match        http*://lewdcorner.com/threads/*
 // @match        http*://*.lewdcorner.com/threads/*
 // @match        http*://f95zone.to/threads/*
