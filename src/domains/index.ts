@@ -1,18 +1,9 @@
+import { isF95z } from "../utils";
 import { extractDataF95z, extractTagsF95z } from "./f95z";
 import { extractDataLC, extractTagsLC } from "./lc";
 
-export const extractTags = () => {
-	if (window.location.hostname === "f95zone.to") {
-		return extractTagsF95z();
-	}
+export const extractTags = () =>
+	isF95z() ? extractTagsF95z() : extractTagsLC();
 
-	return extractTagsLC();
-};
-
-export const extractData = () => {
-	if (window.location.hostname === "f95zone.to") {
-		return extractDataF95z();
-	}
-
-	return extractDataLC();
-};
+export const extractData = () =>
+	isF95z() ? extractDataF95z() : extractDataLC();
