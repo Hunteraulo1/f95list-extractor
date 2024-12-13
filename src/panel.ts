@@ -1,4 +1,4 @@
-import { extractData, extractTags } from "./actions";
+import { extractData, extractTags } from "./domains";
 
 export const panelElement = document.createElement("div");
 
@@ -70,10 +70,8 @@ const button = (title: string, action: () => string) => {
 };
 
 const handleClickButton = (action: () => string) => {
-	const text = action();
-
 	navigator.clipboard
-		.writeText(text)
+		.writeText(action())
 		.then(() => console.log("Text copied to clipboard"))
 		.catch((err) => console.error("Could not copy text", err));
 };
