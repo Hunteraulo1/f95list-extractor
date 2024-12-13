@@ -14,6 +14,8 @@ const banner = `
 // @updateURL    https://raw.githubusercontent.com/Hunteraulo1/f95list-extractor/refs/heads/main/dist/lcToolExtractor.user.js
 // @match        http*://lewdcorner.com/threads/*
 // @match        http*://*.lewdcorner.com/threads/*
+// @match        http*://f95zone.to/threads/*
+// @match        http*://*.f95zone.to/threads/*
 // @icon         https://www.google.com/s2/favicons?sz=64&domain=lewdcorner.com
 // @grant        none
 // ==/UserScript==
