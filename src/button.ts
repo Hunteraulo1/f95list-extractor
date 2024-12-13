@@ -6,7 +6,7 @@ export const button = () => {
 	openElement.style.height = "4rem";
 	openElement.style.width = "4rem";
 	openElement.style.borderRadius = "99999px";
-	openElement.style.backgroundColor = "black";
+	openElement.style.backgroundColor = "#1e2022";
 	openElement.style.position = "fixed";
 	openElement.style.top = "2rem";
 	openElement.style.right = "2rem";
