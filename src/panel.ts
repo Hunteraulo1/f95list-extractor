@@ -72,6 +72,9 @@ const button = (title: string, action: () => string) => {
 const handleClickButton = (action: () => string) => {
 	navigator.clipboard
 		.writeText(action())
-		.then(() => console.log("Text copied to clipboard"))
+		.then(() => {
+			console.info("Text copied to clipboard");
+			console.log(action());
+		})
 		.catch((err) => console.error("Could not copy text", err));
 };

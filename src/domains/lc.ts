@@ -6,7 +6,6 @@ const getData = () => {
 			'script[type="application/ld+json"]',
 		),
 	);
-	console.log("🚀 ~ getData ~ extracts:", extracts);
 
 	const result = {} as CompleteEntity;
 
@@ -20,7 +19,6 @@ const getData = () => {
 	}
 
 	const { mainEntity } = result;
-	console.log("🚀 ~ getData ~ result:", result);
 
 	if (!mainEntity || typeof mainEntity !== "object") {
 		console.error("mainEntity n'est pas défini ou mal formé.");
