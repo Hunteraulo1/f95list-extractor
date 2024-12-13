@@ -1,4 +1,5 @@
 import { extractData, extractTags } from "./domains";
+import { isF95z } from "./utils";
 
 export const panelElement = document.createElement("div");
 
@@ -7,8 +8,11 @@ export const panel = () => {
 	panelElement.style.borderRadius = "8px";
 	panelElement.style.backgroundColor = "#1e2022";
 	panelElement.style.position = "fixed";
-	panelElement.style.top = "16px";
-	panelElement.style.right = "16px";
+	panelElement.style.top = "0";
+	panelElement.style.right = "0";
+	panelElement.style.position = "absolute";
+	panelElement.style.marginTop = isF95z() ? "8px" : "14px";
+	panelElement.style.marginRight = "14px";
 	panelElement.style.zIndex = "1001";
 	panelElement.style.display = "none";
 	panelElement.style.flex = "flex";
@@ -16,8 +20,8 @@ export const panel = () => {
 	panelElement.style.gap = "1rem";
 	panelElement.style.padding = "1rem";
 
-	const body = document.querySelector("body");
-	body?.prepend(panelElement);
+	const nav = document.querySelector("nav");
+	nav?.prepend(panelElement);
 
 	closeButton(panelElement);
 	button("Extract tags", extractTags);
