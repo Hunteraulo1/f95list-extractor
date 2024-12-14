@@ -10,7 +10,7 @@ export const extractDataF95z = () => {
 	const title = document.querySelector("title")?.textContent ?? "";
 	const img = document.querySelector("img.bbImage")?.getAttribute("src") ?? "";
 
-	const id = window.location.pathname.split(".")[1]?.split("/")[0] ?? "";
+	const id = Number(window.location.pathname.split(".")[1]?.split("/")[0]);
 	const image = img?.replace("attachments.", "preview.") ?? "";
 
 	const regName = /.*-\s(.*?)\s\[/i;
@@ -37,7 +37,7 @@ export const extractDataF95z = () => {
 			tags,
 			type,
 			ac: false,
-			link: id === "" ? "" : `https://f95zone.to/threads/${id}`,
+			link: id ? "" : `https://f95zone.to/threads/${id}`,
 			image,
 		},
 		null,

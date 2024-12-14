@@ -40,7 +40,7 @@ export const extractDataLC = () => {
 	const title =
 		document.querySelector<HTMLHeadingElement>(".p-title-value")?.innerText;
 
-	const id = data?.url?.split(".")[2]?.split("/")[0] ?? "";
+	const id = Number(data?.url?.split(".")[2]?.split("/")[0]);
 
 	const version = document.querySelector(
 		"dl[data-field='version'] > dd",
@@ -61,7 +61,7 @@ export const extractDataLC = () => {
 			tags: data?.keywords ?? "",
 			type,
 			ac: false,
-			link: id === "" ? "" : `https://lewdcorner.com/threads/${id}`,
+			link: id ? "" : `https://lewdcorner.com/threads/${id}`,
 			image: data?.image ?? "",
 		},
 		null,
