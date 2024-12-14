@@ -42,6 +42,9 @@ export const extractDataLC = () => {
 
 	const id = Number(data?.url?.split(".")[2]?.split("/")[0]);
 
+	const image =
+		document.querySelector("img.bbImage")?.getAttribute("src") ?? "";
+
 	const version = document.querySelector(
 		"dl[data-field='version'] > dd",
 	)?.textContent;
@@ -62,7 +65,7 @@ export const extractDataLC = () => {
 			type,
 			ac: false,
 			link: id ? "" : `https://lewdcorner.com/threads/${id}`,
-			image: data?.image ?? "",
+			image,
 		},
 		null,
 		0,
