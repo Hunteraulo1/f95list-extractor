@@ -40,13 +40,13 @@ export const extractDataLC = () => {
 	const title =
 		document.querySelector<HTMLHeadingElement>(".p-title-value")?.innerText;
 
-	const id = data?.url?.split(".")[2]?.split("/")[0] ?? "";
+	const id = Number(data?.url?.split(".")[2]?.split("/")[0]);
 
 	const version = document.querySelector(
 		"dl[data-field='version'] > dd",
 	)?.textContent;
 
-	title?.match(/(?!\[)([\w\\. \(\)\']+)(?=\]\s)/gi)?.[0] ?? "";
+	console.log("🚀 ~ extractDataLC ~ titleMatch:", title);
 	const name = data?.headline?.match(/([^\[]*) /)?.[1] ?? "";
 
 	const { status, type } = scrapeGetTitle(title ?? "");
@@ -61,7 +61,7 @@ export const extractDataLC = () => {
 			tags: data?.keywords ?? "",
 			type,
 			ac: false,
-			link: id === "" ? "" : `https://lewdcorner.com/threads/${id}`,
+			link: id ? "" : `https://lewdcorner.com/threads/${id}`,
 			image: data?.image ?? "",
 		},
 		null,
@@ -73,44 +73,29 @@ const scrapeGetTitle = (data: string): { status: string; type: string } => {
 	let status = "";
 	let type = "";
 
-	for (const e of data) {
-		switch (e) {
-			case "Abandoned":
-				status = "ABANDONNÉ";
-				break;
-			case "Completed":
-				status = "TERMINÉ";
-				break;
-			default:
-				status = "EN COURS";
-				break;
-		}
-		switch (e) {
-			case "Ren'Py":
-				type = "RenPy";
-				break;
-			case "RPGM":
-				type = "RPGM";
-				break;
-			case "Unity":
-				type = "Unity";
-				break;
-			case "Unreal Engine":
-				type = "Unreal";
-				break;
-			case "Flash":
-				type = "Flash";
-				break;
-			case "HTML":
-				type = "HTML";
-				break;
-			case "QSP":
-				type = "QSP";
-				break;
-			case "Others":
-				type = "Autre";
-				break;
-		}
+	if (data.includes("Abandoned")) {
+		status = "ABANDONNÉ";
+	} else if (data.includes("Complete")) {
+		status = "TERMINÉ";
+	} else {
+		status = "EN COURS";
+	}
+	if (data.includes("Ren'Py")) {
+		type = "RenPy";
+	} else if (data.includes("RPGM")) {
+		type = "RPGM";
+	} else if (data.includes("Unity")) {
+		type = "Unity";
+	} else if (data.includes("Unreal Engine")) {
+		type = "Unreal";
+	} else if (data.includes("Flash")) {
+		type = "Flash";
+	} else if (data.includes("HTML")) {
+		type = "HTML";
+	} else if (data.includes("QSP")) {
+		type = "QSP";
+	} else if (data.includes("Others")) {
+		type = "Autre";
 	}
 
 	return { status, type };
