@@ -16,7 +16,7 @@
   "description": "tool extractor for F95z and LC",
   "devDependencies": {
     "@types/bun": "^1.1.14",
-    "esbuild": "0.24.0",
+    "esbuild": "0.24.2",
     "sass": "1.83.0"
   },
   "scripts": {
@@ -37,6 +37,7 @@
     }
   },
   "trustedDependencies": [
-    "@parcel/watcher"
+    "@parcel/watcher",
+    "esbuild"
   ]
 }
