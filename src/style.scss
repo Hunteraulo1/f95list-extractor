@@ -12,6 +12,11 @@
 	color: #ba4545;
 	font-weight: bold;
 	font-size: 24px;
+  cursor: pointer;
+
+  &:hover {
+    background-color: #1a1b1b;
+  }
 }
 
 .extractor-panel {
@@ -39,6 +44,11 @@
     color: #ba4545;
     font-weight: bold;
     font-size: 8px;
+    cursor: pointer;
+
+    &:hover {
+      background-color: #2b2b2c;
+    }
   }
 
   .extractor-panelButton {
@@ -50,5 +60,10 @@
     color: #ba4545;
     font-weight: bold;
     font-size: 8px;
+    cursor: pointer;
+
+    &:hover {
+      background-color: #2b2b2c;
+    }
   }
 }
