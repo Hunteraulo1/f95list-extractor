@@ -174,4 +174,5 @@ out
 .DS_Store
 
 # Build file
-index.js
+
+dist
