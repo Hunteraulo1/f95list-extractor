@@ -6,12 +6,17 @@ on:
   pull_request:
     branches: [ main ]
 
+permissions:
+  contents: write
+
 jobs:
   build:
     runs-on: ubuntu-latest
 
     steps:
     - uses: actions/checkout@v4
+      with:
+        fetch-depth: 0
     
     - name: Setup Bun
       uses: oven-sh/setup-bun@v1
@@ -29,4 +34,4 @@ jobs:
         git config --local user.email "action@github.com"
         git config --local user.name "GitHub Action"
         git add -f dist/
-        git diff --quiet && git diff --staged --quiet || (git commit -m "🚀 Build userscript" && git push) 
+        git diff --quiet && git diff --staged --quiet || (git commit -m "🚀 Build userscript" && git push)
