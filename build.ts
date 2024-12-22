@@ -1,4 +1,5 @@
 import type { BuildConfig } from "bun";
+import * as csso from "csso";
 import * as sass from "sass";
 import { version } from "./package.json";
 
@@ -33,11 +34,12 @@ const config: BuildConfig = {
 			setup(build) {
 				build.onLoad({ filter: /\.scss$/ }, async (args) => {
 					const result = sass.compile(args.path);
+					const minified = csso.minify(result.css).css;
 
 					return {
 						contents: `
 							const style = document.createElement('style');
-							style.textContent = \`${result.css}\`;
+							style.textContent = \`${minified}\`;
 							document.head.appendChild(style);
 						`,
 						loader: "js",

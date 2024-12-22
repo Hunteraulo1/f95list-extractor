@@ -16,6 +16,8 @@
   "description": "tool extractor for F95z and LC",
   "devDependencies": {
     "@types/bun": "^1.1.14",
+    "@types/csso": "5.0.4",
+    "csso": "5.0.5",
     "esbuild": "0.24.2",
     "sass": "1.83.0"
   },
