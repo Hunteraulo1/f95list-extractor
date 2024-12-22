@@ -1,12 +1,13 @@
-import { build } from "esbuild";
-// @ts-ignore bug resolveJsonModule
+import type { BuildConfig } from "bun";
+import * as csso from "csso";
+import * as sass from "sass";
 import { version } from "./package.json";
 
 const banner = `
 // ==UserScript==
 // @name         Tool Extractor
 // @namespace    http://tampermonkey.net/
-// @version      v${version}
+// @version      ${version}
 // @description  Extract all LC/F95z thread data
 // @author       Hunteraulo
 // @source       https://github.com/Hunteraulo1/f95list-extractor
@@ -21,15 +22,32 @@ const banner = `
 // ==/UserScript==
 `;
 
-build({
-	entryPoints: ["src/index.ts"],
-	bundle: true,
-	minifySyntax: true,
-	minifyWhitespace: true,
-	sourcemap: false,
-	target: "esNext",
-	outfile: "dist/toolExtractor.user.js",
-	banner: {
-		js: banner,
-	},
-}).catch(() => process.exit(1));
+const config: BuildConfig = {
+	entrypoints: ["./src/index.ts"],
+	outdir: "./dist",
+	minify: true,
+	naming: "toolExtractor.user.js",
+	banner,
+	plugins: [
+		{
+			name: "scss",
+			setup(build) {
+				build.onLoad({ filter: /\.scss$/ }, async (args) => {
+					const result = sass.compile(args.path);
+					const minified = csso.minify(result.css).css;
+
+					return {
+						contents: `
+              const style = document.createElement('style');
+              style.textContent = \`${minified}\`;
+              document.head.appendChild(style);
+            `,
+						loader: "js",
+					};
+				});
+			},
+		},
+	],
+};
+
+await Bun.build(config);

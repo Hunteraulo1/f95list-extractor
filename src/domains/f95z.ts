@@ -20,10 +20,11 @@ export const extractDataF95z = () => {
 	const titleMatch = title.match(regTitle) ?? [];
 	const nameMatch = title.match(regName) ?? [];
 	const versionMatch = title.match(regVersion) ?? [];
+	console.log("versionMatch:", versionMatch);
 
 	const name = nameMatch?.[1] ?? "";
 	const { status, type } = scrapeGetTitle(titleMatch);
-	const version = versionMatch?.[1] ?? "";
+	const version = versionMatch?.[0] ?? "";
 
 	const tags = extractTagsF95z();
 
@@ -37,7 +38,7 @@ export const extractDataF95z = () => {
 			tags,
 			type,
 			ac: false,
-			link: id ? "" : `https://f95zone.to/threads/${id}`,
+			link: id ? `https://f95zone.to/threads/${id}` : "",
 			image,
 		},
 		null,
