@@ -2,10 +2,13 @@ name: Build and Deploy
 
 on:
   pull_request:
-    branches: [ main ]
+    types: [closed]
+    branches:
+      - main
 
 permissions:
   contents: write
+  pull-requests: write
 
 jobs:
   build:
@@ -14,7 +17,6 @@ jobs:
     steps:
     - uses: actions/checkout@v4
       with:
-        ref: ${{ github.head_ref || github.ref_name }}
         fetch-depth: 0
     
     - name: Setup Bun
@@ -33,4 +35,20 @@ jobs:
         git config --local user.email "action@github.com"
         git config --local user.name "GitHub Action"
         git add -f dist/
-        git diff --quiet && git diff --staged --quiet || (git commit -m "🚀 Build userscript" && git push origin HEAD:${{ github.head_ref || github.ref_name }})
+        git diff --quiet && git diff --staged --quiet || git push origin main
+
+    - name: Get version
+      id: get_version
+      run: echo "version=$(node -p "require('./package.json').version")" >> $GITHUB_OUTPUT
+
+    - name: Create Release
+      uses: softprops/action-gh-release@v1
+      with:
+        files: |
+          dist/toolExtractor.user.js
+        tag_name: v${{ steps.get_version.outputs.version }}
+        body: |
+          ## Installation
+          **Tampermonkey: https://www.tampermonkey.net**
+
+          *mise à jour automatique possible dans les paramètres de Tampermonkey*
