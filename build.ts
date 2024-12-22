@@ -38,10 +38,10 @@ const config: BuildConfig = {
 
 					return {
 						contents: `
-							const style = document.createElement('style');
-							style.textContent = \`${minified}\`;
-							document.head.appendChild(style);
-						`,
+              const style = document.createElement('style');
+              style.textContent = \`${minified}\`;
+              document.head.appendChild(style);
+            `,
 						loader: "js",
 					};
 				});
