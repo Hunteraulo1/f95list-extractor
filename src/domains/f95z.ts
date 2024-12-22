@@ -38,7 +38,7 @@ export const extractDataF95z = () => {
 			tags,
 			type,
 			ac: false,
-			link: id ? "" : `https://f95zone.to/threads/${id}`,
+			link: id ? `https://f95zone.to/threads/${id}` : "",
 			image,
 		},
 		null,
