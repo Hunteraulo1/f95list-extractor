@@ -4,21 +4,8 @@ import { isF95z } from "./utils";
 export const panelElement = document.createElement("div");
 
 export const panel = () => {
-	panelElement.style.width = "128px";
-	panelElement.style.borderRadius = "8px";
-	panelElement.style.backgroundColor = "#1e2022";
-	panelElement.style.position = "fixed";
-	panelElement.style.top = "0";
-	panelElement.style.right = "0";
-	panelElement.style.position = "absolute";
+	panelElement.className = "extractor-panel";
 	panelElement.style.marginTop = isF95z() ? "8px" : "14px";
-	panelElement.style.marginRight = "14px";
-	panelElement.style.zIndex = "1001";
-	panelElement.style.display = "none";
-	panelElement.style.flex = "flex";
-	panelElement.style.flexDirection = "column";
-	panelElement.style.gap = "1rem";
-	panelElement.style.padding = "1rem";
 
 	const nav = document.querySelector("nav");
 	nav?.prepend(panelElement);
@@ -31,15 +18,7 @@ export const panel = () => {
 const closeButton = (element: HTMLDivElement) => {
 	const close = document.createElement("button");
 
-	close.style.height = "16px";
-	close.style.width = "16px";
-	close.style.borderRadius = "99999px";
-	close.style.backgroundColor = "#37383a";
-	close.style.alignSelf = "end";
-	close.style.border = "none";
-	close.style.color = "#ba4545";
-	close.style.fontWeight = "bold";
-	close.style.fontSize = "8px";
+	close.className = "extractor-close";
 	close.textContent = "X";
 
 	element.prepend(close);
@@ -56,14 +35,7 @@ const handleClickClose = (element: HTMLButtonElement) => {
 const button = (title: string, action: () => string) => {
 	const button = document.createElement("button");
 
-	button.style.height = "16px";
-	button.style.width = "100%";
-	button.style.backgroundColor = "#37383a";
-	button.style.border = "#ba4545";
-	button.style.borderRadius = "8px";
-	button.style.color = "#ba4545";
-	button.style.fontWeight = "bold";
-	button.style.fontSize = "8px";
+	button.className = "extractor-panelButton";
 	button.textContent = title;
 
 	panelElement.append(button);

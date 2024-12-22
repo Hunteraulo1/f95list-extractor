@@ -1,0 +1,54 @@
+.extractor-button {
+  height: "48px";
+	width: "48px";
+	border-radius: "99999px";
+	background-color: "#1e2022";
+	top: "0";
+	right: "0";
+	position: "absolute";
+	margin-right: "14px";
+	z-index: "1000";
+	border: "none";
+	color: "#ba4545";
+	font-weight: "bold";
+	font-size: "24px";
+}
+
+.extractor-panel {
+  width: "128px";
+	border-radius: "8px";
+	background-color: "#1e2022";
+	top: "0";
+	right: "0";
+	position: "absolute";
+	margin-right: "14px";
+	z-index: "1001";
+	display: "none";
+	flex: "flex";
+	flex-direction: "column";
+	gap: "1rem";
+	padding: "1rem";
+
+  .extractor-close {
+    height: "16px";
+    width: "16px";
+    border-radius: "99999px";
+    background-color: "#37383a";
+    align-self: "end";
+    border: "none";
+    color: "#ba4545";
+    font-weight: "bold";
+    font-size: "8px";
+  }
+
+  .extractor-panelButton {
+    height: "16px";
+    width: "100%";
+    background-color: "#37383a";
+    border: "#ba4545";
+    border-radius: "8px";
+    color: "#ba4545";
+    font-weight: "bold";
+    font-size: "8px";
+  }
+}
