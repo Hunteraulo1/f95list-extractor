@@ -1,4 +1,5 @@
 import type { BuildConfig } from "bun";
+import * as sass from "sass";
 import { version } from "./package.json";
 
 const banner = `
@@ -31,11 +32,15 @@ const config: BuildConfig = {
 			name: "scss",
 			setup(build) {
 				build.onLoad({ filter: /\.scss$/ }, async (args) => {
-					const contents = await Bun.file(args.path).text();
-					// Vous pouvez ajouter ici la compilation SCSS si nécessaire
+					const result = sass.compile(args.path);
+
 					return {
-						contents,
-						loader: "css",
+						contents: `
+							const style = document.createElement('style');
+							style.textContent = \`${result.css}\`;
+							document.head.appendChild(style);
+						`,
+						loader: "js",
 					};
 				});
 			},
