@@ -1,45 +1,42 @@
 {
-  "name": "f95list-extractor",
-  "version": "1.2.3",
-  "module": "index.ts",
-  "type": "module",
-  "private": false,
-  "author": {
-    "email": "hunteraulo@pm.me",
-    "name": "Hunteraulo"
-  },
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/Hunteraulo1/f95list-extractor"
-  },
-  "license": "UNLICENSED",
-  "description": "tool extractor for F95z and LC",
-  "devDependencies": {
-    "@types/bun": "^1.1.14",
-    "@types/csso": "5.0.4",
-    "csso": "5.0.5",
-    "esbuild": "0.24.2",
-    "sass": "1.83.0"
-  },
-  "scripts": {
-    "build": "bun build.ts",
-    "lint": "bunx @biomejs/biome lint --write .",
-    "format": "bunx @biomejs/biome format --write .",
-    "check": "bunx @biomejs/biome check --write ."
-  },
-  "peerDependencies": {
-    "typescript": "^5.7.2"
-  },
-  "config": {
-    "commitizen": {
-      "path": "cz-emoji"
-    },
-    "cz-emoji": {
-      "skipQuestions": ["scope", "body", "issues", "breaking"]
-    }
-  },
-  "trustedDependencies": [
-    "@parcel/watcher",
-    "esbuild"
-  ]
+	"name": "f95list-extractor",
+	"version": "1.2.4",
+	"module": "index.ts",
+	"type": "module",
+	"private": false,
+	"author": {
+		"email": "hunteraulo@pm.me",
+		"name": "Hunteraulo"
+	},
+	"repository": {
+		"type": "git",
+		"url": "https://github.com/Hunteraulo1/f95list-extractor"
+	},
+	"license": "UNLICENSED",
+	"description": "tool extractor for F95z and LC",
+	"devDependencies": {
+		"@types/bun": "^1.1.14",
+		"@types/csso": "5.0.4",
+		"csso": "5.0.5",
+		"esbuild": "0.24.2",
+		"sass": "1.83.0"
+	},
+	"scripts": {
+		"build": "bun build.ts",
+		"lint": "bunx @biomejs/biome lint --write .",
+		"format": "bunx @biomejs/biome format --write .",
+		"check": "bunx @biomejs/biome check --write ."
+	},
+	"peerDependencies": {
+		"typescript": "^5.7.2"
+	},
+	"config": {
+		"commitizen": {
+			"path": "cz-emoji"
+		},
+		"cz-emoji": {
+			"skipQuestions": ["scope", "body", "issues", "breaking"]
+		}
+	},
+	"trustedDependencies": ["@parcel/watcher", "esbuild"]
 }
