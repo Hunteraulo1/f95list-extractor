@@ -1,4 +1,4 @@
-import { build } from "esbuild";
+import type { BuildConfig } from "bun";
 // @ts-ignore bug resolveJsonModule
 import { version } from "./package.json";
 
@@ -21,15 +21,27 @@ const banner = `
 // ==/UserScript==
 `;
 
-build({
-	entryPoints: ["src/index.ts"],
-	bundle: true,
-	minifySyntax: true,
-	minifyWhitespace: true,
-	sourcemap: false,
-	target: "esNext",
-	outfile: "dist/toolExtractor.user.js",
-	banner: {
-		js: banner,
-	},
-}).catch(() => process.exit(1));
+const config: BuildConfig = {
+	entrypoints: ["./src/index.ts"],
+	outdir: "./dist",
+	minify: true,
+	naming: "toolExtractor.user.js",
+	banner,
+	plugins: [
+		{
+			name: "scss",
+			setup(build) {
+				build.onLoad({ filter: /\.scss$/ }, async (args) => {
+					const contents = await Bun.file(args.path).text();
+					// Vous pouvez ajouter ici la compilation SCSS si nécessaire
+					return {
+						contents,
+						loader: "css",
+					};
+				});
+			},
+		},
+	],
+};
+
+await Bun.build(config);
