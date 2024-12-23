@@ -64,7 +64,7 @@ export const extractDataLC = () => {
 			tags: data?.keywords ?? "",
 			type,
 			ac: false,
-			link: id ? "" : `https://lewdcorner.com/threads/${id}`,
+			link: id ? `https://lewdcorner.com/threads/${id}` : "",
 			image,
 		},
 		null,
