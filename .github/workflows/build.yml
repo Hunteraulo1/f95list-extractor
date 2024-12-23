@@ -35,7 +35,12 @@ jobs:
         git config --local user.email "action@github.com"
         git config --local user.name "GitHub Action"
         git add -f dist/
-        git push origin main
+        if git diff --staged --quiet; then
+          echo "Aucun changement à committer"
+        else
+          git commit -m "build: mise à jour des fichiers dist"
+          git push origin main
+        fi
 
     - name: Get version
       id: get_version
