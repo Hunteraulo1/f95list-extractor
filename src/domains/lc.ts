@@ -75,14 +75,25 @@ export const extractDataLC = (fullData: boolean) => {
 		);
 	}
 
-	const developer = "developer";
+	const developer =
+		document.querySelector('[data-field="developer"] > dd')?.textContent ?? "";
+	const addedOn = Math.floor(new Date().getTime() / 1000);
+	const lastUpdatedData = document.querySelector(
+		'[data-field="dategamerelease"] > dd',
+	)?.textContent;
+	const lastUpdated = lastUpdatedData
+		? Math.floor(new Date(lastUpdatedData).getTime() / 1000)
+		: 0;
+
+	// TODO: fix image link
+
+	// TODO: implement the values below
+	const tags: string[] = [];
 	const typeId = "14";
-	const addedOn = "0";
-	const lastUpdated = "0";
 	const description = "description";
 	const changelog = "changelog";
 
-	return `INSERT INTO games VALUES ((SELECT id FROM games ORDER BY id ASC LIMIT 1) - 1, 1, '${name}', '${version}', '${developer}', ${typeId}, 1, '${link}', ${addedOn}, ${lastUpdated}, 0, '', 0, 0.0, 0, '', '', 0, 0, '[]', '${description}', '${changelog}', '[]', '[6]', '', '${image}', '[]', NULL, 0, '[]', 0, '[]', 0, '[]')`;
+	return `INSERT INTO games VALUES ((SELECT id FROM games ORDER BY id ASC LIMIT 1) - 1, 1, '${name}', '${version}', '${developer}', ${typeId}, 1, '${link}', ${addedOn}, ${lastUpdated}, 0, '', 0, 0.0, 0, '', '', 0, 0, '[]', '${description}', '${changelog}', '${tags.toString()}', '[6]', '', '${image}', '[]', NULL, 0, '[]', 0, '[]', 0, '[]')`;
 };
 
 /*
