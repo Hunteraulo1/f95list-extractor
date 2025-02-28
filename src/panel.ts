@@ -13,6 +13,9 @@ export const panel = () => {
 	closeButton(panelElement);
 	button("Extract tags", extractTags);
 	button("Extract all data", extractData);
+
+	if (isF95z()) return;
+
 	button("Extract for f95checker", extractFullData);
 };
 
