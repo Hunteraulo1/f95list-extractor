@@ -34,7 +34,7 @@ export const extractTagsLC = () => {
 	return mainEntity?.keywords ?? "";
 };
 
-export const extractDataLC = () => {
+export const extractDataLC = (fullData: boolean) => {
 	const data = getData();
 
 	const title =
@@ -54,23 +54,43 @@ export const extractDataLC = () => {
 
 	const { status, type } = scrapeGetTitle(title ?? "");
 
-	return JSON.stringify(
-		{
-			id,
-			domain: "LewdCorner",
-			name,
-			version,
-			status,
-			tags: data?.keywords ?? "",
-			type,
-			ac: false,
-			link: id ? `https://lewdcorner.com/threads/${id}` : "",
-			image,
-		},
-		null,
-		0,
-	);
+	const link = id ? `https://lewdcorner.com/threads/${id}` : "";
+
+	if (!fullData) {
+		return JSON.stringify(
+			{
+				id,
+				domain: "LewdCorner",
+				name,
+				version,
+				status,
+				tags: data?.keywords ?? "",
+				type,
+				ac: false,
+				link,
+				image,
+			},
+			null,
+			0,
+		);
+	}
+
+	const developer = "developer";
+	const typeId = "14";
+	const addedOn = "0";
+	const lastUpdated = "0";
+	const description = "description";
+	const changelog = "changelog";
+
+	return `INSERT INTO games VALUES ((SELECT id FROM games ORDER BY id ASC LIMIT 1) - 1, 1, '${name}', '${version}', '${developer}', ${typeId}, 1, '${link}', ${addedOn}, ${lastUpdated}, 0, '', 0, 0.0, 0, '', '', 0, 0, '[]', '${description}', '${changelog}', '[]', '[6]', '', '${image}', '[]', NULL, 0, '[]', 0, '[]', 0, '[]')`;
 };
+
+/*
+-150	1	VIRTUAL DAUGHTER	Unchecked	LaFamilleClub	14	1	https://lewdcorner.com/threads/15283	1737764995	1731279600	0		1737765288	4	3		Unchecked	0	0	["D:/Games/VirtualDaughterch01-0.4A-pc/VirtualDaughterch01.exe"]	The game takes place in the near future. You play a 35 year old software developer who dabbles with chatbots and artificial intelligence in order to combat loneliness.
+You find an app that sounds too good to be true, but there is a catch. It claims to "alter reality as you know it".
+Meanwhile, things get turned upside-down after a car crash lands you in the emergency room.		[8, 68, 75]	[6]		custom	[]		0	[]	0	[]	0	[]
+
+*/
 
 const scrapeGetTitle = (data: string): { status: string; type: string } => {
 	let status = "";

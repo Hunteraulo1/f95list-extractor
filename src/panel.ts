@@ -1,4 +1,4 @@
-import { extractData, extractTags } from "./domains";
+import { extractData, extractFullData, extractTags } from "./domains";
 import { isF95z } from "./utils";
 
 export const panelElement = document.createElement("div");
@@ -13,6 +13,7 @@ export const panel = () => {
 	closeButton(panelElement);
 	button("Extract tags", extractTags);
 	button("Extract all data", extractData);
+	button("Extract for f95checker", extractFullData);
 };
 
 const closeButton = (element: HTMLDivElement) => {
