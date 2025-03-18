@@ -84,11 +84,14 @@ export const extractDataLC = (fullData: boolean) => {
 	const lastUpdated = lastUpdatedData
 		? Math.floor(new Date(lastUpdatedData).getTime() / 1000)
 		: 0;
+	const description =
+		document
+			.querySelector(".message-body .bbWrapper > div")
+			?.textContent?.split("Overview:\n")[1] ?? "";
 
 	// TODO: implement the values below
 	const tags: string[] = [];
-	const description = "description";
-	const changelog = "changelog";
+	const changelog = "n/a";
 
 	return `INSERT INTO games VALUES ((SELECT id FROM games ORDER BY id ASC LIMIT 1) - 1, 1, '${name}', '${version}', '${developer}', ${typeId}, 1, '${link}', ${addedOn}, ${lastUpdated}, 0, '', 0, 0.0, 0, '', '', 0, 0, '[]', '${description}', '${changelog}', '${tags.toString()}', '[6]', '', '${image}', '[]', NULL, 0, '[]', 0, '[]', 0, '[]')`;
 };
@@ -97,7 +100,6 @@ export const extractDataLC = (fullData: boolean) => {
 -150	1	VIRTUAL DAUGHTER	Unchecked	LaFamilleClub	14	1	https://lewdcorner.com/threads/15283	1737764995	1731279600	0		1737765288	4	3		Unchecked	0	0	["D:/Games/VirtualDaughterch01-0.4A-pc/VirtualDaughterch01.exe"]	The game takes place in the near future. You play a 35 year old software developer who dabbles with chatbots and artificial intelligence in order to combat loneliness.
 You find an app that sounds too good to be true, but there is a catch. It claims to "alter reality as you know it".
 Meanwhile, things get turned upside-down after a car crash lands you in the emergency room.		[8, 68, 75]	[6]		custom	[]		0	[]	0	[]	0	[]
-
 */
 
 const scrapeGetTitle = (
