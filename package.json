@@ -17,11 +17,13 @@
 	"devDependencies": {
 		"@types/bun": "^1.2.4",
 		"@types/csso": "5.0.4",
+		"cross-env": "7.0.3",
 		"csso": "5.0.5",
 		"esbuild": "0.25.0",
 		"sass": "1.85.1"
 	},
 	"scripts": {
+		"dev": "cross-env NODE_ENV=development bun --watch build.ts",
 		"build": "bun build.ts",
 		"lint": "bunx @biomejs/biome lint --write .",
 		"format": "bunx @biomejs/biome format --write .",

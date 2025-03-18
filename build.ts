@@ -1,5 +1,5 @@
-import type { BuildConfig } from "bun";
 import * as csso from "csso";
+import { type BuildOptions, type SameShape, build, context } from "esbuild";
 import * as sass from "sass";
 import { version } from "./package.json";
 
@@ -7,7 +7,7 @@ const banner = `
 // ==UserScript==
 // @name         Tool Extractor
 // @namespace    http://tampermonkey.net/
-// @version      ${version}
+// @version      ${process.env.NODE_ENV === "development" ? `${version}-dev` : version}
 // @description  Extract all LC/F95z thread data
 // @author       Hunteraulo
 // @source       https://github.com/Hunteraulo1/f95list-extractor
@@ -22,12 +22,17 @@ const banner = `
 // ==/UserScript==
 `;
 
-const config: BuildConfig = {
-	entrypoints: ["./src/index.ts"],
-	outdir: "./dist",
-	minify: true,
-	naming: "toolExtractor.user.js",
-	banner,
+const buildOptions: SameShape<BuildOptions, BuildOptions> = {
+	entryPoints: ["src/index.ts"],
+	bundle: true,
+	minifySyntax: process.env.NODE_ENV !== "development",
+	minifyWhitespace: process.env.NODE_ENV !== "development",
+	sourcemap: process.env.NODE_ENV === "development",
+	target: "esNext",
+	outfile: "dist/toolExtractor.user.js",
+	banner: {
+		js: banner,
+	},
 	plugins: [
 		{
 			name: "scss",
@@ -50,4 +55,9 @@ const config: BuildConfig = {
 	],
 };
 
-await Bun.build(config);
+if (process.env.NODE_ENV === "development") {
+	const ctx = await context(buildOptions);
+	await ctx.watch();
+} else {
+	build(buildOptions).catch(() => process.exit(1));
+}
