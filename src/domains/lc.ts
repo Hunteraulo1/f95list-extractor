@@ -43,7 +43,7 @@ export const extractDataLC = (fullData: boolean) => {
 	const id = Number(data?.url?.split(".")[2]?.split("/")[0]);
 
 	const image =
-		document.querySelector("img.bbImage")?.getAttribute("src") ?? "";
+		document.querySelector("img.bbImage")?.getAttribute("src") ?? ""; // TODO: break feature
 
 	const version = document.querySelector(
 		"dl[data-field='version'] > dd",
@@ -52,7 +52,7 @@ export const extractDataLC = (fullData: boolean) => {
 	console.log("🚀 ~ extractDataLC ~ titleMatch:", title);
 	const name = data?.headline?.match(/([^\[]*) /)?.[1] ?? "";
 
-	const { status, type } = scrapeGetTitle(title ?? "");
+	const { status, type, typeId } = scrapeGetTitle(title ?? "");
 
 	const link = id ? `https://lewdcorner.com/threads/${id}` : "";
 
@@ -85,11 +85,8 @@ export const extractDataLC = (fullData: boolean) => {
 		? Math.floor(new Date(lastUpdatedData).getTime() / 1000)
 		: 0;
 
-	// TODO: fix image link
-
 	// TODO: implement the values below
 	const tags: string[] = [];
-	const typeId = "14";
 	const description = "description";
 	const changelog = "changelog";
 
@@ -103,9 +100,12 @@ Meanwhile, things get turned upside-down after a car crash lands you in the emer
 
 */
 
-const scrapeGetTitle = (data: string): { status: string; type: string } => {
+const scrapeGetTitle = (
+	data: string,
+): { status: string; type: string; typeId: number } => {
 	let status = "";
 	let type = "";
+	let typeId = 23;
 
 	if (data.includes("Abandoned")) {
 		status = "ABANDONNÉ";
@@ -116,21 +116,29 @@ const scrapeGetTitle = (data: string): { status: string; type: string } => {
 	}
 	if (data.includes("Ren'Py")) {
 		type = "RenPy";
+		typeId = 14;
 	} else if (data.includes("RPGM")) {
 		type = "RPGM";
+		typeId = 13;
 	} else if (data.includes("Unity")) {
 		type = "Unity";
+		typeId = 19;
 	} else if (data.includes("Unreal Engine")) {
 		type = "Unreal";
+		typeId = 20;
 	} else if (data.includes("Flash")) {
 		type = "Flash";
+		typeId = 4;
 	} else if (data.includes("HTML")) {
 		type = "HTML";
+		typeId = 5;
 	} else if (data.includes("QSP")) {
 		type = "QSP";
+		typeId = 10;
 	} else if (data.includes("Others")) {
 		type = "Autre";
+		typeId = 9;
 	}
 
-	return { status, type };
+	return { status, type, typeId };
 };
