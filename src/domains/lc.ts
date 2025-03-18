@@ -120,7 +120,7 @@ export const extractDataLC = (fullData: boolean) => {
 	// TODO: implement the values below
 	const changelog = "n/a";
 
-	return `INSERT INTO games VALUES ((SELECT id FROM games ORDER BY id ASC LIMIT 1) - 1, 1, "${name.replaceAll('"', "''")}", "${version?.replaceAll('"', "''")}", "${developer.replaceAll('"', "''")}", ${typeId}, 1, '${link}', ${addedOn}, ${lastUpdated}, 0, '', 0, ${score ?? 0.0}, 0, '', '', 0, 0, '[]', "${description.replaceAll('"', "''")}", "${changelog.replaceAll('"', "''")}", '[${tags}]', '[6]', '', '${image}', '[]', NULL, 0, '[]', 0, '[]', 0, '[]')`;
+	return `INSERT INTO games VALUES ((SELECT id FROM games ORDER BY id ASC LIMIT 1) - 1, 1, "${name.replaceAll('"', "''")}", "${version?.replaceAll('"', "''")}", "${developer.replaceAll('"', "''")}", ${typeId}, 1, '${link}', ${addedOn}, ${lastUpdated}, 0, '', 0, ${score ?? 0.0}, 0, '', '', 0, 0, '[]', "${description.replaceAll('"', "")}", "${changelog.replaceAll('"', "''")}", '[${tags}]', '[6]', '', '${image}', '[]', NULL, 0, '[]', 0, '[]', 0, '[]')`;
 };
 
 /*
