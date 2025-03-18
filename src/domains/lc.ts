@@ -88,12 +88,39 @@ export const extractDataLC = (fullData: boolean) => {
 		document
 			.querySelector(".message-body .bbWrapper > div")
 			?.textContent?.split("Overview:\n")[1] ?? "";
+	const tagsData: string[] =
+		document
+			.querySelector(".js-tagList")
+			?.textContent?.replaceAll("\t", "")
+			.split("\n\n\n\n")
+			.slice(1) ?? [];
+
+	const tags: number[] = [];
+	const unknownTags: string[] = [];
+
+	for (const tag of tagsData) {
+		if (tag in idByTagsName) {
+			tags.push(idByTagsName[tag as keyof typeof idByTagsName]);
+
+			return;
+		}
+
+		unknownTags.push(tag);
+	}
+
+	alert(`Tags non trouvés: ${unknownTags}`);
+
+	const ratingComponent = document.querySelector(".bratr-rating");
+
+	const score: number =
+		Number(ratingComponent?.querySelectorAll(".br-selected").length ?? "0") +
+		Number(ratingComponent?.querySelectorAll(".br-fractional").length ?? "0") /
+			2;
 
 	// TODO: implement the values below
-	const tags: string[] = [];
 	const changelog = "n/a";
 
-	return `INSERT INTO games VALUES ((SELECT id FROM games ORDER BY id ASC LIMIT 1) - 1, 1, '${name}', '${version}', '${developer}', ${typeId}, 1, '${link}', ${addedOn}, ${lastUpdated}, 0, '', 0, 0.0, 0, '', '', 0, 0, '[]', '${description}', '${changelog}', '${tags.toString()}', '[6]', '', '${image}', '[]', NULL, 0, '[]', 0, '[]', 0, '[]')`;
+	return `INSERT INTO games VALUES ((SELECT id FROM games ORDER BY id ASC LIMIT 1) - 1, 1, '${name}', '${version}', '${developer}', ${typeId}, 1, '${link}', ${addedOn}, ${lastUpdated}, 0, '', 0, ${score ?? 0.0}, 0, '', '', 0, 0, '[]', '${description}', '${changelog}', '${tags.toString()}', '[6]', '', '${image}', '[]', NULL, 0, '[]', 0, '[]', 0, '[]')`;
 };
 
 /*
@@ -143,4 +170,122 @@ const scrapeGetTitle = (
 	}
 
 	return { status, type, typeId };
+};
+
+const idByTagsName = {
+	"2d game": 1,
+	"2dcg": 2,
+	"3d game": 3,
+	"3dcg": 4,
+	adventure: 5,
+	ahegao: 6,
+	"ai cg": 140,
+	"anal sex": 7,
+	animated: 8,
+	bdsm: 34,
+	bestiality: 35,
+	"big ass": 36,
+	"big tits": 37,
+	blackmail: 38,
+	bukkake: 39,
+	censored: 40,
+	"character creation": 41,
+	cheating: 42,
+	combat: 43,
+	corruption: 44,
+	cosplay: 45,
+	creampie: 46,
+	"dating sim": 47,
+	dilf: 48,
+	drugs: 49,
+	"dystopian setting": 50,
+	exhibitionism: 51,
+	fantasy: 52,
+	"female protagonist": 54,
+	femaledomination: 53,
+	footjob: 55,
+	furry: 56,
+	"futa trans": 57,
+	"futa/trans protagonist": 58,
+	gay: 59,
+	"graphic violence": 60,
+	groping: 61,
+	"group sex": 62,
+	handjob: 63,
+	harem: 64,
+	horror: 65,
+	humiliation: 66,
+	humor: 67,
+	incest: 68,
+	"internal view": 69,
+	interracial: 70,
+	"japanese game": 71,
+	"kinetic novel": 72,
+	lactation: 73,
+	lesbian: 74,
+	loli: 75,
+	"male protagonist": 77,
+	maledomination: 76,
+	management: 78,
+	masturbation: 79,
+	milf: 80,
+	"mind control": 81,
+	"mobile game": 82,
+	monster: 83,
+	"monster girl": 84,
+	"multiple endings": 85,
+	"multiple penetration": 86,
+	"multiple protagonist": 87,
+	necrophilia: 88,
+	"no sexual content": 89,
+	ntr: 90,
+	"oral sex": 91,
+	paranormal: 92,
+	parody: 93,
+	platformer: 94,
+	"point click": 95,
+	possession: 96,
+	pov: 97,
+	pregnancy: 98,
+	prostitution: 99,
+	puzzle: 100,
+	rape: 101,
+	"real porn": 102,
+	religion: 103,
+	romance: 104,
+	rpg: 105,
+	sandbox: 106,
+	scat: 107,
+	"school setting": 108,
+	"sci-fi": 109,
+	"sex toys": 110,
+	"sexual harassment": 111,
+	shooter: 112,
+	shota: 113,
+	"side-scroller": 114,
+	simulator: 115,
+	sissification: 116,
+	slave: 117,
+	"sleep sex": 118,
+	spanking: 119,
+	strategy: 120,
+	stripping: 121,
+	superpowers: 122,
+	swinging: 123,
+	teasing: 124,
+	tentacles: 125,
+	"text based": 126,
+	titfuck: 127,
+	trainer: 128,
+	transformation: 129,
+	trap: 130,
+	"turn based combat": 131,
+	twins: 132,
+	urination: 133,
+	"vaginal sex": 134,
+	virgin: 135,
+	"virtual reality": 136,
+	voiced: 137,
+	vore: 138,
+	voyeurism: 139,
 };
