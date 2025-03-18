@@ -49,7 +49,6 @@ export const extractDataLC = (fullData: boolean) => {
 		"dl[data-field='version'] > dd",
 	)?.textContent;
 
-	console.log("🚀 ~ extractDataLC ~ titleMatch:", title);
 	const name = data?.headline?.match(/([^\[]*) /)?.[1] ?? "";
 
 	const { status, type, typeId } = scrapeGetTitle(title ?? "");
