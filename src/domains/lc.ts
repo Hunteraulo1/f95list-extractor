@@ -87,7 +87,8 @@ export const extractDataLC = (fullData: boolean) => {
 	const description =
 		document
 			.querySelector(".message-body .bbWrapper > div")
-			?.textContent?.split("Overview:\n")[1] ?? "";
+			?.textContent?.split("Overview:\n")[1]
+			.replaceAll('"', "''") ?? "";
 	const tagsData: string[] =
 		document
 			.querySelector(".js-tagList")
@@ -120,7 +121,7 @@ export const extractDataLC = (fullData: boolean) => {
 	// TODO: implement the values below
 	const changelog = "n/a";
 
-	return `INSERT INTO games VALUES ((SELECT id FROM games ORDER BY id ASC LIMIT 1) - 1, 1, '${name}', '${version}', '${developer}', ${typeId}, 1, '${link}', ${addedOn}, ${lastUpdated}, 0, '', 0, ${score ?? 0.0}, 0, '', '', 0, 0, '[]', '${description}', '${changelog}', '${tags.toString()}', '[6]', '', '${image}', '[]', NULL, 0, '[]', 0, '[]', 0, '[]')`;
+	return `INSERT INTO games VALUES ((SELECT id FROM games ORDER BY id ASC LIMIT 1) - 1, 1, "${name.replaceAll('"', "''")}", "${version?.replaceAll('"', "''")}", "${developer.replaceAll('"', "''")}", ${typeId}, 1, '${link}', ${addedOn}, ${lastUpdated}, 0, '', 0, ${score ?? 0.0}, 0, '', '', 0, 0, '[]', "${description.replaceAll('"', "''")}", "${changelog.replaceAll('"', "''")}", '${tags.toString()}', '[6]', '', '${image}', '[]', NULL, 0, '[]', 0, '[]', 0, '[]')`;
 };
 
 /*
