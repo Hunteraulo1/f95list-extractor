@@ -25,10 +25,14 @@ const banner = `
 const buildOptions: SameShape<BuildOptions, BuildOptions> = {
 	entryPoints: ["src/index.ts"],
 	bundle: true,
-	minifySyntax: process.env.NODE_ENV !== "development",
+	minify: false,
+	minifySyntax: false,
 	minifyWhitespace: process.env.NODE_ENV !== "development",
+	minifyIdentifiers: process.env.NODE_ENV !== "development",
 	sourcemap: process.env.NODE_ENV === "development",
-	target: "esNext",
+	charset: "utf8",
+	format: "iife",
+	target: "esnext",
 	outfile: "dist/toolExtractor.user.js",
 	banner: {
 		js: banner,
