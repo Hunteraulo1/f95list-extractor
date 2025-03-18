@@ -76,7 +76,7 @@ export const extractDataLC = (fullData: boolean) => {
 	}
 
 	const developer =
-		document.querySelector('[data-field="developer"] > dd')?.textContent ?? "";
+		document.querySelector('[data-field="Developer"] > dd')?.textContent ?? "";
 	const addedOn = Math.floor(new Date().getTime() / 1000);
 	const lastUpdatedData = document.querySelector(
 		'[data-field="dategamerelease"] > dd',
