@@ -100,9 +100,7 @@ export const extractDataLC = (fullData: boolean) => {
 	const unknownTags: string[] = [];
 
 	for (const tag of tagsData) {
-		console.log("🚀 ~ extractDataLC ~ tag:", tag);
 		if (tag in idByTagsName) {
-			console.log("🚀 ~ extractDataLC ~ tag 2:", tag);
 			tags.push(idByTagsName[tag as keyof typeof idByTagsName]);
 
 			continue;
