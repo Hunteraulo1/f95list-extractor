@@ -120,7 +120,25 @@ export const extractDataLC = (fullData: boolean) => {
 	// TODO: implement the values below
 	const changelog = "n/a";
 
-	return `INSERT INTO games VALUES ((SELECT id FROM games ORDER BY id ASC LIMIT 1) - 1, 1, "${name.replaceAll('"', "''")}", "${version?.replaceAll('"', "''")}", "${developer.replaceAll('"', "''")}", ${typeId}, 1, '${link}', ${addedOn}, ${lastUpdated}, 0, '', 0, ${score ?? 0.0}, 0, '', '', 0, 0, '[]', "${description.replaceAll('"', "")}", "${changelog.replaceAll('"', "''")}", '[${tags}]', '[6]', '', '', '[]', NULL, 0, '[]', 0, '[]', 0, '[]')`;
+	return `BEGIN TRANSACTION;
+
+UPDATE games
+SET name = "${name.replaceAll('"', "''")}",
+    version = "${version?.replaceAll('"', "''")}",
+    developer = "${developer.replaceAll('"', "''")}",
+    last_updated = ${lastUpdated},
+    score = ${score ?? 0.0},
+    description = "${description.replaceAll('"', "")}",
+    tags = json_patch(tags, '[${tags}]')
+WHERE id = (SELECT id FROM games WHERE url = '${link}' LIMIT 1);
+
+INSERT INTO games
+SELECT 
+    (SELECT COALESCE(MIN(id) - 1, -1) FROM games), 
+    1, "${name.replaceAll('"', "''")}", "${version?.replaceAll('"', "''")}", "${developer.replaceAll('"', "''")}", ${typeId}, 1, '${link}', ${addedOn}, ${lastUpdated}, 0, '', 0, ${score ?? 0.0}, 0, '', '', 0, 0, '[]', "${description.replaceAll('"', "")}", "${changelog.replaceAll('"', "''")}", '[${tags}]', '[6]', '', '', '[]', NULL, 0, '[]', 0, '[]', 0, '[]'
+WHERE NOT EXISTS (SELECT 1 FROM games WHERE url = '${link}');
+
+COMMIT;`;
 };
 
 /*
