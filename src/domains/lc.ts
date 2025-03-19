@@ -120,32 +120,8 @@ export const extractDataLC = (fullData: boolean) => {
 	// TODO: implement the values below
 	const changelog = "n/a";
 
-	return `BEGIN TRANSACTION;
-
-UPDATE games
-SET name = "${name.replaceAll('"', "''")}",
-    version = "${version?.replaceAll('"', "''")}",
-    developer = "${developer.replaceAll('"', "''")}",
-    last_updated = ${lastUpdated},
-    score = ${score ?? 0.0},
-    description = "${description.replaceAll('"', "")}",
-    tags = json_patch(tags, '[${tags}]')
-WHERE id = (SELECT id FROM games WHERE url = '${link}' LIMIT 1);
-
-INSERT INTO games
-SELECT 
-    (SELECT COALESCE(MIN(id) - 1, -1) FROM games), 
-    1, "${name.replaceAll('"', "''")}", "${version?.replaceAll('"', "''")}", "${developer.replaceAll('"', "''")}", ${typeId}, 1, '${link}', ${addedOn}, ${lastUpdated}, 0, '', 0, ${score ?? 0.0}, 0, '', '', 0, 0, '[]', "${description.replaceAll('"', "")}", "${changelog.replaceAll('"', "''")}", '[${tags}]', '[6]', '', '', '[]', NULL, 0, '[]', 0, '[]', 0, '[]'
-WHERE NOT EXISTS (SELECT 1 FROM games WHERE url = '${link}');
-
-COMMIT;`;
+	return `BEGIN TRANSACTION; UPDATE games SET name = "${name.replaceAll('"', "''")}", version = "${version?.replaceAll('"', "''")}", developer = "${developer.replaceAll('"', "''")}", last_updated = ${lastUpdated}, score = ${score ?? 0.0}, description = "${description.replaceAll('"', "")}", tags = json_patch(tags, '[${tags}]') WHERE id = (SELECT id FROM games WHERE url = '${link}' LIMIT 1); INSERT INTO games SELECT (SELECT COALESCE(MIN(id) - 1, -1) FROM games), 1, "${name.replaceAll('"', "''")}", "${version?.replaceAll('"', "''")}", "${developer.replaceAll('"', "''")}", ${typeId}, 1, '${link}', ${addedOn}, ${lastUpdated}, 0, '', 0, ${score ?? 0.0}, 0, '', '', 0, 0, '[]', "${description.replaceAll('"', "")}", "${changelog.replaceAll('"', "''")}", '[${tags}]', '[6]', '', '', '[]', NULL, 0, '[]', 0, '[]', 0, '[]' WHERE NOT EXISTS (SELECT 1 FROM games WHERE url = '${link}'); COMMIT;`;
 };
-
-/*
--150	1	VIRTUAL DAUGHTER	Unchecked	LaFamilleClub	14	1	https://lewdcorner.com/threads/15283	1737764995	1731279600	0		1737765288	4	3		Unchecked	0	0	["D:/Games/VirtualDaughterch01-0.4A-pc/VirtualDaughterch01.exe"]	The game takes place in the near future. You play a 35 year old software developer who dabbles with chatbots and artificial intelligence in order to combat loneliness.
-You find an app that sounds too good to be true, but there is a catch. It claims to "alter reality as you know it".
-Meanwhile, things get turned upside-down after a car crash lands you in the emergency room.		[8, 68, 75]	[6]		custom	[]		0	[]	0	[]	0	[]
-*/
 
 const scrapeGetTitle = (
 	data: string,
