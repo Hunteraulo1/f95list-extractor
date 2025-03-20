@@ -112,7 +112,7 @@ export const extractDataLC = (fullData: boolean) => {
 		unknownTags.push(tag);
 	}
 
-	alert(`Tags non trouvés: ${unknownTags}`);
+	if (tags.length > 0) alert(`Tags non trouvés: ${unknownTags}`);
 
 	const ratingComponent = document.querySelector(".bratr-rating");
 
