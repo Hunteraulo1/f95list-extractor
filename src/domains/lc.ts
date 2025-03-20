@@ -100,7 +100,11 @@ export const extractDataLC = (fullData: boolean) => {
 
 	for (const tag of tagsData) {
 		if (tag in idByTagsName) {
-			tags.push(idByTagsName[tag as keyof typeof idByTagsName]);
+			const id = idByTagsName[tag as keyof typeof idByTagsName];
+
+			if (id === 0) continue;
+
+			tags.push(id);
 
 			continue;
 		}
@@ -108,7 +112,7 @@ export const extractDataLC = (fullData: boolean) => {
 		unknownTags.push(tag);
 	}
 
-	//alert(`Tags non trouvés: ${unknownTags}`);
+	alert(`Tags non trouvés: ${unknownTags}`);
 
 	const ratingComponent = document.querySelector(".bratr-rating");
 
@@ -197,6 +201,7 @@ const idByTagsName = {
 	fantasy: 52,
 	"female protagonist": 54,
 	femaledomination: 53,
+	femdom: 53,
 	footjob: 55,
 	furry: 56,
 	"futa trans": 57,
@@ -267,6 +272,7 @@ const idByTagsName = {
 	superpowers: 122,
 	swinging: 123,
 	teasing: 124,
+	teen: 0,
 	tentacles: 125,
 	"text based": 126,
 	titfuck: 127,
