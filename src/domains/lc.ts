@@ -102,7 +102,7 @@ export const extractDataLC = (fullData: boolean) => {
 		if (tag in idByTagsName) {
 			const id = idByTagsName[tag as keyof typeof idByTagsName];
 
-			if (id === 0) continue;
+			if (id === 0 || tag in tags) continue;
 
 			tags.push(id);
 
@@ -272,6 +272,7 @@ const idByTagsName = {
 	sissification: 116,
 	slave: 117,
 	"sleep sex": 118,
+	"small tits": 0,
 	spanking: 119,
 	strategy: 120,
 	stripping: 121,
