@@ -113,6 +113,7 @@ export const extractDataLC = (fullData: boolean) => {
 	}
 
 	if (unknownTags[0] === "") unknownTags.shift();
+	console.info("🚀 ~ extractDataLC ~ unknownTags:", unknownTags);
 	if (unknownTags.length > 0) alert(`Tags non trouvés: ${unknownTags}`);
 
 	const ratingComponent = document.querySelector(".bratr-rating");
@@ -125,7 +126,7 @@ export const extractDataLC = (fullData: boolean) => {
 	// TODO: implement the values below
 	const changelog = "n/a";
 
-	return `BEGIN TRANSACTION; UPDATE games SET name = "${name.replaceAll('"', "''")}", version = "${version?.replaceAll('"', "''")}", developer = "${developer.replaceAll('"', "''")}", last_updated = ${lastUpdated}, score = ${score ?? 0.0}, description = "${description.replaceAll('"', "")}", tags = json_patch(tags, '[${tags}]') WHERE id = (SELECT id FROM games WHERE url = '${link}' LIMIT 1); INSERT INTO games SELECT (SELECT COALESCE(MIN(id) - 1, -1) FROM games), 1, "${name.replaceAll('"', "''")}", "${version?.replaceAll('"', "''")}", "${developer.replaceAll('"', "''")}", ${typeId}, 1, '${link}', ${addedOn}, ${lastUpdated}, 0, '', 0, ${score ?? 0.0}, 0, '', '', 0, 0, '[]', "${description.replaceAll('"', "")}", "${changelog.replaceAll('"', "''")}", '[${tags}]', '[6]', '', '', '[]', NULL, 0, '[]', 0, '[]', 0, '[]' WHERE NOT EXISTS (SELECT 1 FROM games WHERE url = '${link}'); COMMIT;`;
+	return `BEGIN TRANSACTION; UPDATE games SET name = "${name.replaceAll('"', "''")}", version = "${version?.replaceAll('"', "''")}", developer = "${developer.replaceAll('"', "''")}", last_updated = ${lastUpdated}, score = ${score ?? 0.0}, description = "${description.replaceAll('"', "")}", tags = json_patch(tags, '[${tags}]') WHERE id = (SELECT id FROM games WHERE url = '${link}' LIMIT 1); INSERT INTO games SELECT (SELECT COALESCE(MIN(id) - 1, -1) FROM games), 1, "${name.replaceAll('"', "''")}", "${version?.replaceAll('"', "''")}", "${developer.replaceAll('"', "''")}", ${typeId}, 1, '${link}', ${addedOn}, ${lastUpdated}, 0, '', 0, ${score ?? 0.0}, 0, '', '', 0, 0, '[]', "${description.replaceAll('"', "")}", "${changelog.replaceAll('"', "''")}", '[${tags}]', '[]', '', '', '[]', NULL, 0, '[]', 0, '[]', 0, '[]' WHERE NOT EXISTS (SELECT 1 FROM games WHERE url = '${link}'); COMMIT;`;
 };
 
 const scrapeGetTitle = (
@@ -176,6 +177,7 @@ const idByTagsName = {
 	"2dcg": 2,
 	"3d game": 3,
 	"3dcg": 4,
+	"adjustable age": 0,
 	adventure: 5,
 	ahegao: 6,
 	"ai cg": 140,
@@ -208,6 +210,8 @@ const idByTagsName = {
 	"futa trans": 57,
 	"futa/trans protagonist": 58,
 	gay: 59,
+	gilf: 80,
+	gore: 60,
 	"graphic violence": 60,
 	groping: 61,
 	"group sex": 62,
@@ -238,6 +242,7 @@ const idByTagsName = {
 	"multiple protagonist": 87,
 	necrophilia: 88,
 	"no sexual content": 89,
+	"netori (stealing)": 90,
 	ntr: 90,
 	"oral sex": 91,
 	paranormal: 92,
@@ -289,4 +294,5 @@ const idByTagsName = {
 	voiced: 137,
 	vore: 138,
 	voyeurism: 139,
+	watersports: 133,
 };
