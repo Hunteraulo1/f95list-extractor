@@ -29,7 +29,7 @@ const buildOptions: SameShape<BuildOptions, BuildOptions> = {
 	minifySyntax: false,
 	minifyWhitespace: process.env.NODE_ENV !== "development",
 	minifyIdentifiers: process.env.NODE_ENV !== "development",
-	sourcemap: process.env.NODE_ENV === "development",
+	sourcemap: false,
 	charset: "utf8",
 	format: "iife",
 	target: "esnext",
