@@ -1,4 +1,8 @@
-name: Build and Deploy
+name: Release Script
+
+permissions:
+  contents: write
+  pull-requests: write
 
 on:
   pull_request:
@@ -6,54 +10,59 @@ on:
     branches:
       - main
 
-permissions:
-  contents: write
-  pull-requests: write
-
 jobs:
   build:
+    if: github.event.pull_request.merged == true
     runs-on: ubuntu-latest
-
-    steps:
-    - uses: actions/checkout@v4
-      with:
-        fetch-depth: 0
     
-    - name: Setup Bun
-      uses: oven-sh/setup-bun@v1
-      with:
-        bun-version: latest
-
-    - name: Install dependencies
-      run: bun install
-
-    - name: Build
-      run: bun run build
-
-    - name: Get version
-      id: get_version
-      run: echo "version=$(node -p "require('./package.json').version")" >> $GITHUB_OUTPUT
-
-    - name: Commit and push if changed
-      run: |
-        git config --local user.email "action@github.com"
-        git config --local user.name "GitHub Action"
-        git add -f dist/
-        if git diff --staged --quiet; then
-          echo "Aucun changement à committer"
-        else
-          git commit -m "🚀 Build v${{ steps.get_version.outputs.version }}"
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          token: ${{ secrets.PERSONAL_ACCESS_TOKEN }}
+      
+      - name: Setup Bun
+        uses: oven-sh/setup-bun@v1
+        
+      - name: Install dependencies
+        run: bun install
+        
+      - name: Get version
+        id: get_version
+        run: echo "version=$(node -p "require('./package.json').version")" >> $GITHUB_OUTPUT
+        
+      - name: Get previous version
+        id: get_previous_version
+        run: |
+          PREVIOUS_TAG=$(git describe --tags --abbrev=0 2>/dev/null || echo "v0.0.0")
+          PREVIOUS_VERSION=${PREVIOUS_TAG#v}
+          echo "previous_version=$PREVIOUS_VERSION" >> $GITHUB_OUTPUT
+        
+      - name: Build script
+        run: bun run build
+        
+      - name: Commit build
+        run: |
+          git config --local user.email "action@github.com"
+          git config --local user.name "GitHub Action"
+          git add -f dist/toolExtractor.user.js
+          git commit -m ":bookmark: deploy version ${{ steps.get_version.outputs.version }}"
           git push origin main
-        fi
+        
+      - name: Create Release
+        uses: softprops/action-gh-release@v1
+        with:
+          files: dist/toolExtractor.user.js
+          tag_name: v${{ steps.get_version.outputs.version }}
+          body: |
+            ## Installation
+            **Étape 1:**
+            - Installer Tampermonkey
 
-    - name: Create Release
-      uses: softprops/action-gh-release@v1
-      with:
-        files: |
-          dist/toolExtractor.user.js
-        tag_name: v${{ steps.get_version.outputs.version }}
-        body: |
-          ## Installation
-          **Tampermonkey: https://www.tampermonkey.net**
+            **Étape 2:**
+            - Télécharger le script
+            - Cliquer sur *installer* _(Tampermonkey détecte automatiquement le téléchargement d'un script)_
 
-          *mise à jour automatique possible dans les paramètres de Tampermonkey*
+            **Full Changelog**: https://github.com/${{ github.repository }}/compare/v${{ steps.get_previous_version.outputs.previous_version }}...v${{ steps.get_version.outputs.version }}
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
