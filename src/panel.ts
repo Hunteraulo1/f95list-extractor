@@ -1,4 +1,4 @@
-import { extractData, extractTags } from "./domains";
+import { extractData, extractFullData, extractTags } from "./domains";
 import { isF95z } from "./utils";
 
 export const panelElement = document.createElement("div");
@@ -13,6 +13,10 @@ export const panel = () => {
 	closeButton(panelElement);
 	button("Extract tags", extractTags);
 	button("Extract all data", extractData);
+
+	if (isF95z()) return;
+
+	button("Extract for f95checker", extractFullData);
 };
 
 const closeButton = (element: HTMLDivElement) => {
@@ -50,7 +54,6 @@ const handleClickButton = (action: () => string) => {
 		.writeText(action())
 		.then(() => {
 			console.info("Text copied to clipboard");
-			console.log(action());
 		})
 		.catch((err) => console.error("Could not copy text", err));
 };
