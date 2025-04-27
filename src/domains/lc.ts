@@ -99,6 +99,8 @@ export const extractDataLC = (fullData: boolean) => {
 	const unknownTags: string[] = [];
 
 	for (const tag of tagsData) {
+		if (tag === "") continue;
+
 		if (tag in idByTagsName) {
 			const id = idByTagsName[tag as keyof typeof idByTagsName];
 
