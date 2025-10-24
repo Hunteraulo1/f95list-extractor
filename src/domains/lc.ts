@@ -163,7 +163,7 @@ const scrapeGetTitle = (
 	} else if (data.includes("QSP")) {
 		type = "QSP";
 		typeId = 10;
-	} else if (data.includes("Others")) {
+	} else if (data.includes("Other")) {
 		type = "Autre";
 		typeId = 9;
 	}
