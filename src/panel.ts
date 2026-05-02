@@ -1,7 +1,36 @@
-import { extractData, extractFullData, extractTags } from "./domains";
+import { DASHBOARD_ORIGIN } from "./dashboardOrigin";
+import { extractData, extractFullData, extractTags, getExtractPayload } from "./domains";
+import type { ExtractListPayload } from "./types";
 import { isF95z } from "./utils";
 
 export const panelElement = document.createElement("div");
+
+const buildExtractGetUrl = (segment: "f95" | "lc", payload: ExtractListPayload) => {
+	const origin = DASHBOARD_ORIGIN.replace(/\/$/, "");
+	const q = new URLSearchParams({
+		name: payload.name,
+		tags: payload.tags,
+		image: payload.image,
+		link: payload.link,
+		gameVersion: payload.version,
+		gameAutoCheck: payload.ac ? "true" : "false",
+	});
+
+	return `${origin}/api/extract/${segment}/${payload.id}?${q}`;
+};
+
+const addToList = () => {
+	const payload = getExtractPayload();
+	if (!payload?.id || Number.isNaN(payload.id)) {
+		alert("Impossible de déterminer l'identifiant du jeu.");
+		return;
+	}
+
+	const segment = isF95z() ? "f95" : "lc";
+	const url = buildExtractGetUrl(segment, payload);
+
+	window.open(url, "_blank", "noopener,noreferrer");
+};
 
 export const panel = () => {
 	panelElement.className = "extractor-panel";
@@ -13,6 +42,7 @@ export const panel = () => {
 	closeButton(panelElement);
 	button("Extract tags", extractTags);
 	button("Extract all data", extractData);
+	actionButton("Ajouter à la liste", addToList);
 
 	if (isF95z()) return;
 
@@ -46,6 +76,19 @@ const button = (title: string, action: () => string) => {
 
 	button.addEventListener("click", () => {
 		handleClickButton(action);
+	});
+};
+
+const actionButton = (title: string, handler: () => void | Promise<void>) => {
+	const el = document.createElement("button");
+
+	el.className = "extractor-panelButton";
+	el.textContent = title;
+
+	panelElement.append(el);
+
+	el.addEventListener("click", () => {
+		void Promise.resolve(handler()).catch((err) => console.error(err));
 	});
 };
 

@@ -1,4 +1,4 @@
-import type { CompleteEntity } from "../types";
+import type { CompleteEntity, ExtractListPayload } from "../types";
 
 const getData = () => {
 	const extracts = Array.from(
@@ -34,8 +34,9 @@ export const extractTagsLC = () => {
 	return mainEntity?.keywords ?? "";
 };
 
-export const extractDataLC = (fullData: boolean) => {
+export const getExtractPayloadLC = (): ExtractListPayload | null => {
 	const data = getData();
+	if (!data) return null;
 
 	const title =
 		document.querySelector<HTMLHeadingElement>(".p-title-value")?.innerText;
@@ -51,9 +52,35 @@ export const extractDataLC = (fullData: boolean) => {
 
 	const name = data?.headline?.match(/([^\[]*) /)?.[1] ?? "";
 
-	const { status, type, typeId } = scrapeGetTitle(title ?? "");
+	const { status, type } = scrapeGetTitle(title ?? "");
 
 	const link = id ? `https://lewdcorner.com/threads/${id}` : "";
+
+	return {
+		id,
+		domain: "LewdCorner",
+		name,
+		version: version ?? "",
+		status,
+		tags: data?.keywords ?? "",
+		type,
+		ac: false,
+		link,
+		image,
+	};
+};
+
+export const extractDataLC = (fullData: boolean) => {
+	const payload = getExtractPayloadLC();
+	if (!payload) {
+		return JSON.stringify({});
+	}
+
+	const { id, name, version, status, type, link, image } = payload;
+	const data = getData();
+	const title =
+		document.querySelector<HTMLHeadingElement>(".p-title-value")?.innerText;
+	const { typeId } = scrapeGetTitle(title ?? "");
 
 	if (!fullData) {
 		return JSON.stringify(
