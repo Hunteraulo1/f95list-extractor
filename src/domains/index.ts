@@ -1,6 +1,10 @@
-import { isF95z } from "../utils";
 import type { ExtractListPayload } from "../types";
-import { extractDataF95z, extractTagsF95z, getExtractPayloadF95z } from "./f95z";
+import { isF95z } from "../utils";
+import {
+	extractDataF95z,
+	extractTagsF95z,
+	getExtractPayloadF95z,
+} from "./f95z";
 import { extractDataLC, extractTagsLC, getExtractPayloadLC } from "./lc";
 
 const extractTags = () => (isF95z() ? extractTagsF95z() : extractTagsLC());

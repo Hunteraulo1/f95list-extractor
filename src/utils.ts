@@ -7,7 +7,9 @@ const stripImgMarkup = (s: string): string =>
 const textFromF95DescriptionEl = (el: Element): string => {
 	const html = el.innerHTML;
 	const doc = new DOMParser().parseFromString(html, "text/html");
-	doc.body.querySelectorAll("img").forEach((img) => img.remove());
+	for (const img of doc.body.querySelectorAll("img")) {
+		img.remove();
+	}
 	let t = doc.body.textContent ?? "";
 	t = stripImgMarkup(t);
 	return t.replace("Overview:", "");

@@ -1,5 +1,10 @@
 import { DASHBOARD_ORIGIN } from "./dashboardOrigin";
-import { extractData, extractFullData, extractTags, getExtractPayload } from "./domains";
+import {
+	extractData,
+	extractFullData,
+	extractTags,
+	getExtractPayload,
+} from "./domains";
 import type { ExtractListPayload } from "./types";
 import { isF95z } from "./utils";
 
@@ -16,7 +21,10 @@ const descriptionForQuery = (payload: ExtractListPayload): string => {
 		: `${raw.slice(0, MAX_DESCRIPTION_QUERY_LEN)}…`;
 };
 
-const buildExtractGetUrl = (segment: "f95" | "lc", payload: ExtractListPayload) => {
+const buildExtractGetUrl = (
+	segment: "f95" | "lc",
+	payload: ExtractListPayload,
+) => {
 	const origin = DASHBOARD_ORIGIN.replace(/\/$/, "");
 	const q = new URLSearchParams({
 		name: payload.name,

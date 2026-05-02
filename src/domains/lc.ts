@@ -51,7 +51,7 @@ export const getExtractPayloadLC = (): ExtractListPayload | null => {
 		"dl[data-field='version'] > dd",
 	)?.textContent;
 
-	const name = data?.headline?.match(/([^\[]*) /)?.[1] ?? "";
+	const name = data?.headline?.match(/([^[]*) /)?.[1] ?? "";
 
 	const { status, type } = scrapeGetTitle(title ?? "");
 
@@ -106,7 +106,7 @@ export const extractDataLC = (fullData: boolean) => {
 
 	const developer =
 		document.querySelector('[data-field="Developer"] > dd')?.textContent ?? "";
-	const addedOn = Math.floor(new Date().getTime() / 1000);
+	const addedOn = Math.floor(Date.now() / 1000);
 	const lastUpdatedData = document.querySelector(
 		'[data-field="dategamerelease"] > dd',
 	)?.textContent;
@@ -224,11 +224,11 @@ const idByTagsName = {
 	bdsm: 34,
 	bestiality: 35,
 	"big ass": 36,
-  "big dick": 0,
+	"big dick": 0,
 	"big dicks": 0,
 	"big tits": 37,
 	blackmail: 38,
-  blowjob: 91,
+	blowjob: 91,
 	brothel: 99,
 	bukkake: 39,
 	"card game": 0,
@@ -281,7 +281,7 @@ const idByTagsName = {
 	handjob: 63,
 	harem: 64,
 	headpats: 0,
-  hebe: 75,
+	hebe: 75,
 	horror: 65,
 	humiliation: 66,
 	humor: 67,
@@ -303,7 +303,7 @@ const idByTagsName = {
 	masturbation: 79,
 	milf: 80,
 	"mind control": 81,
-  "mini games": 100,
+	"mini games": 100,
 	"mobile game": 82,
 	monster: 83,
 	"monster girl": 84,
@@ -341,7 +341,7 @@ const idByTagsName = {
 	"sex toys": 110,
 	"sexual content": 0,
 	"sexual harassment": 111,
-  sharing: 90,
+	sharing: 90,
 	shooter: 112,
 	shota: 113,
 	"side-scroller": 114,
@@ -350,7 +350,7 @@ const idByTagsName = {
 	sissification: 116,
 	slave: 117,
 	"sleep sex": 118,
-  "slice of life": 0,
+	"slice of life": 0,
 	"small tits": 0,
 	spanking: 119,
 	strategy: 120,
@@ -362,7 +362,7 @@ const idByTagsName = {
 	tentacles: 125,
 	"text based": 126,
 	titfuck: 127,
-  toddler: 75,
+	toddler: 75,
 	trainer: 128,
 	transformation: 129,
 	transgender: 57,
