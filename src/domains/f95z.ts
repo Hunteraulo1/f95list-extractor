@@ -1,4 +1,5 @@
 import type { ExtractListPayload } from "../types";
+import { scrapeThreadDescription } from "../utils";
 
 export const extractTagsF95z = () => {
 	const tags = document.querySelectorAll(".tagItem") ?? [];
@@ -41,6 +42,7 @@ export const getExtractPayloadF95z = (): ExtractListPayload => {
 		ac: false,
 		link: id ? `https://f95zone.to/threads/${id}` : "",
 		image,
+		description: scrapeThreadDescription() ?? "",
 	};
 };
 

@@ -34,6 +34,7 @@ export type ExtractListPayload = {
 	ac: boolean;
 	link: string;
 	image: string;
+	description: string;
 };
 
 export interface CompleteEntity {

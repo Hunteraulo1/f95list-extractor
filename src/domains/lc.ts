@@ -1,4 +1,5 @@
 import type { CompleteEntity, ExtractListPayload } from "../types";
+import { scrapeThreadDescription } from "../utils";
 
 const getData = () => {
 	const extracts = Array.from(
@@ -67,6 +68,7 @@ export const getExtractPayloadLC = (): ExtractListPayload | null => {
 		ac: false,
 		link,
 		image,
+		description: scrapeThreadDescription() ?? "",
 	};
 };
 
@@ -76,7 +78,7 @@ export const extractDataLC = (fullData: boolean) => {
 		return JSON.stringify({});
 	}
 
-	const { id, name, version, status, type, link, image } = payload;
+	const { id, name, version, status, type, link, image, description } = payload;
 	const data = getData();
 	const title =
 		document.querySelector<HTMLHeadingElement>(".p-title-value")?.innerText;
@@ -95,6 +97,7 @@ export const extractDataLC = (fullData: boolean) => {
 				ac: false,
 				link,
 				image,
+				description,
 			},
 			null,
 			0,
@@ -110,7 +113,7 @@ export const extractDataLC = (fullData: boolean) => {
 	const lastUpdated = lastUpdatedData
 		? Math.floor(new Date(lastUpdatedData).getTime() / 1000)
 		: 0;
-	const description =
+	const descriptionSql =
 		document
 			.querySelector(".message-body .bbWrapper > div")
 			?.textContent?.split("Overview:\n")[1]
@@ -152,7 +155,7 @@ export const extractDataLC = (fullData: boolean) => {
 		Number(ratingComponent?.querySelectorAll(".br-fractional").length ?? "0") /
 			2;
 
-	return `BEGIN TRANSACTION; UPDATE games SET name = "${name?.replaceAll('"', "''")}", version = "${version?.replaceAll('"', "''")}", developer = "${developer?.replaceAll('"', "''")}", last_updated = ${lastUpdated}, score = ${score ?? 0.0}, description = "${description?.replaceAll('"', "")}", tags = json_patch(tags, '[${tags}]') WHERE id = (SELECT id FROM games WHERE url = '${link}' LIMIT 1); INSERT INTO games SELECT (SELECT COALESCE(MIN(id) - 1, -1) FROM games), 1, "${name?.replaceAll('"', "''")}", "${version?.replaceAll('"', "''")}", "${developer?.replaceAll('"', "''")}", ${typeId}, 1, '${link}', ${addedOn}, ${lastUpdated}, 0, '', 0, ${score ?? 0.0}, 0, '', '', 0, 0, '[]', "${description?.replaceAll('"', "")}", "n/a", '[${tags}]', '[]', '', '', '[]', NULL, 0, '[]', 0, '[]', 0, '[]' WHERE NOT EXISTS (SELECT 1 FROM games WHERE url = '${link}'); COMMIT;`;
+	return `BEGIN TRANSACTION; UPDATE games SET name = "${name?.replaceAll('"', "''")}", version = "${version?.replaceAll('"', "''")}", developer = "${developer?.replaceAll('"', "''")}", last_updated = ${lastUpdated}, score = ${score ?? 0.0}, description = "${descriptionSql?.replaceAll('"', "")}", tags = json_patch(tags, '[${tags}]') WHERE id = (SELECT id FROM games WHERE url = '${link}' LIMIT 1); INSERT INTO games SELECT (SELECT COALESCE(MIN(id) - 1, -1) FROM games), 1, "${name?.replaceAll('"', "''")}", "${version?.replaceAll('"', "''")}", "${developer?.replaceAll('"', "''")}", ${typeId}, 1, '${link}', ${addedOn}, ${lastUpdated}, 0, '', 0, ${score ?? 0.0}, 0, '', '', 0, 0, '[]', "${descriptionSql?.replaceAll('"', "")}", "n/a", '[${tags}]', '[]', '', '', '[]', NULL, 0, '[]', 0, '[]', 0, '[]' WHERE NOT EXISTS (SELECT 1 FROM games WHERE url = '${link}'); COMMIT;`;
 };
 
 const scrapeGetTitle = (

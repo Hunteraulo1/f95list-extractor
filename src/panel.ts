@@ -5,6 +5,17 @@ import { isF95z } from "./utils";
 
 export const panelElement = document.createElement("div");
 
+/** Limite pour éviter une query string trop longue (navigateurs / proxies). */
+const MAX_DESCRIPTION_QUERY_LEN = 1200;
+
+const descriptionForQuery = (payload: ExtractListPayload): string => {
+	const raw = payload.description?.trim() ?? "";
+	if (!raw) return "";
+	return raw.length <= MAX_DESCRIPTION_QUERY_LEN
+		? raw
+		: `${raw.slice(0, MAX_DESCRIPTION_QUERY_LEN)}…`;
+};
+
 const buildExtractGetUrl = (segment: "f95" | "lc", payload: ExtractListPayload) => {
 	const origin = DASHBOARD_ORIGIN.replace(/\/$/, "");
 	const q = new URLSearchParams({
@@ -15,6 +26,11 @@ const buildExtractGetUrl = (segment: "f95" | "lc", payload: ExtractListPayload) 
 		gameVersion: payload.version,
 		gameAutoCheck: payload.ac ? "true" : "false",
 	});
+
+	const description = descriptionForQuery(payload);
+	if (description) {
+		q.set("description", description);
+	}
 
 	return `${origin}/api/extract/${segment}/${payload.id}?${q}`;
 };
