@@ -24,7 +24,7 @@
   },
   "scripts": {
     "dev": "cross-env NODE_ENV=development bun --watch build.ts",
-    "build": "bun build.ts",
+    "build": "cross-env NODE_ENV=production bun build.ts",
     "lint": "bunx @biomejs/biome lint --write .",
     "format": "bunx @biomejs/biome format --write .",
     "check": "bunx @biomejs/biome check --write ."
