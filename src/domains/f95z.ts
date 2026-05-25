@@ -27,7 +27,7 @@ export const getExtractPayloadF95z = (): ExtractListPayload => {
 
 	const name = nameMatch?.[1] ?? "";
 	const { status, type } = scrapeGetTitle(titleMatch);
-	const version = versionMatch?.[0] ?? "";
+	const version = versionMatch?.[0]?.replace("[", "").replace("]", "") ?? "";
 
 	const tags = extractTagsF95z();
 

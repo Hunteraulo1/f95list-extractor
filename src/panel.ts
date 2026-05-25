@@ -1,9 +1,9 @@
 import { DASHBOARD_ORIGIN } from "./dashboardOrigin";
 import {
-	extractData,
-	extractFullData,
-	extractTags,
-	getExtractPayload,
+  extractData,
+  extractFullData,
+  extractTags,
+  getExtractPayload,
 } from "./domains";
 import type { ExtractListPayload } from "./types";
 import { isF95z } from "./utils";
@@ -64,13 +64,13 @@ export const panel = () => {
 	nav?.prepend(panelElement);
 
 	closeButton(panelElement);
-	button("Extract tags", extractTags);
-	button("Extract all data", extractData);
+	button("Copier les tags", extractTags);
+	button("Copier toutes les données", extractData);
 	actionButton("Ajouter à la liste", addToList);
 
 	if (isF95z()) return;
 
-	button("Extract for f95checker", extractFullData);
+	button("Copier pour f95checker", extractFullData);
 };
 
 const closeButton = (element: HTMLDivElement) => {
