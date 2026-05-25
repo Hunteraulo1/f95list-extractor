@@ -1,9 +1,9 @@
 import { DASHBOARD_ORIGIN } from "./dashboardOrigin";
 import {
-  extractData,
-  extractFullData,
-  extractTags,
-  getExtractPayload,
+	extractData,
+	extractFullData,
+	extractTags,
+	getExtractPayload,
 } from "./domains";
 import type { ExtractListPayload } from "./types";
 import { isF95z } from "./utils";

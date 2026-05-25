@@ -1,5 +1,5 @@
 import * as csso from "csso";
-import { build, context, type BuildOptions, type SameShape } from "esbuild";
+import { type BuildOptions, build, context, type SameShape } from "esbuild";
 import * as sass from "sass";
 import { version } from "./package.json";
 
