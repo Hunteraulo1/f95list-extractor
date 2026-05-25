@@ -1,13 +1,23 @@
 import * as csso from "csso";
-import { type BuildOptions, type SameShape, build, context } from "esbuild";
+import { type BuildOptions, build, context, type SameShape } from "esbuild";
 import * as sass from "sass";
 import { version } from "./package.json";
+
+const isDev = process.env.NODE_ENV === "development";
+
+const dashboardOrigin = process.env.DASHBOARD_ORIGIN?.trim();
+if (!dashboardOrigin) {
+	const hint = isDev
+		? "Définissez DASHBOARD_ORIGIN dans .env.development (ex. http://localhost:5173)."
+		: "Définissez DASHBOARD_ORIGIN dans .env ou .env.production.";
+	throw new Error(`DASHBOARD_ORIGIN manquant au build. ${hint}`);
+}
 
 const banner = `
 // ==UserScript==
 // @name         Tool Extractor
 // @namespace    http://tampermonkey.net/
-// @version      ${process.env.NODE_ENV === "development" ? `${version}-dev` : version}
+// @version      ${isDev ? `${version}-dev` : version}
 // @description  Extract all LC/F95z thread data
 // @author       Hunteraulo
 // @source       https://github.com/Hunteraulo1/f95list-extractor
@@ -27,13 +37,16 @@ const buildOptions: SameShape<BuildOptions, BuildOptions> = {
 	bundle: true,
 	minify: false,
 	minifySyntax: false,
-	minifyWhitespace: process.env.NODE_ENV !== "development",
-	minifyIdentifiers: process.env.NODE_ENV !== "development",
+	minifyWhitespace: !isDev,
+	minifyIdentifiers: !isDev,
 	sourcemap: false,
 	charset: "utf8",
 	format: "iife",
 	target: "esnext",
 	outfile: "dist/toolExtractor.user.js",
+	define: {
+		__DASHBOARD_ORIGIN__: JSON.stringify(dashboardOrigin),
+	},
 	banner: {
 		js: banner,
 	},
@@ -59,7 +72,7 @@ const buildOptions: SameShape<BuildOptions, BuildOptions> = {
 	],
 };
 
-if (process.env.NODE_ENV === "development") {
+if (isDev) {
 	const ctx = await context(buildOptions);
 	await ctx.watch();
 } else {

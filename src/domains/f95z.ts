@@ -1,3 +1,6 @@
+import type { ExtractListPayload } from "../types";
+import { scrapeThreadDescription } from "../utils";
+
 export const extractTagsF95z = () => {
 	const tags = document.querySelectorAll(".tagItem") ?? [];
 
@@ -6,7 +9,7 @@ export const extractTagsF95z = () => {
 		.join(", ");
 };
 
-export const extractDataF95z = () => {
+export const getExtractPayloadF95z = (): ExtractListPayload => {
 	const title = document.querySelector("title")?.textContent ?? "";
 	const img = document.querySelector("img.bbImage")?.getAttribute("src") ?? "";
 
@@ -24,27 +27,27 @@ export const extractDataF95z = () => {
 
 	const name = nameMatch?.[1] ?? "";
 	const { status, type } = scrapeGetTitle(titleMatch);
-	const version = versionMatch?.[0] ?? "";
+	const version = versionMatch?.[0]?.replace("[", "").replace("]", "") ?? "";
 
 	const tags = extractTagsF95z();
 
-	return JSON.stringify(
-		{
-			id,
-			domain: "F95z",
-			name,
-			version,
-			status,
-			tags,
-			type,
-			ac: false,
-			link: id ? `https://f95zone.to/threads/${id}` : "",
-			image,
-		},
-		null,
-		0,
-	);
+	return {
+		id,
+		domain: "F95z",
+		name,
+		version,
+		status,
+		tags,
+		type,
+		ac: false,
+		link: id ? `https://f95zone.to/threads/${id}` : "",
+		image,
+		description: scrapeThreadDescription() ?? "",
+	};
 };
+
+export const extractDataF95z = () =>
+	JSON.stringify(getExtractPayloadF95z(), null, 0);
 
 const scrapeGetTitle = (data: string[]): { status: string; type: string } => {
 	let status = "";

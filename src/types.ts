@@ -22,6 +22,21 @@ interface MainEntity {
 	articleBody: string;
 }
 
+/** Données « extract all » envoyées à l’API d’ajout à la liste. */
+export type ExtractListPayload = {
+	id: number;
+	domain: string;
+	name: string;
+	version: string;
+	status: string;
+	tags: string;
+	type: string;
+	ac: boolean;
+	link: string;
+	image: string;
+	description: string;
+};
+
 export interface CompleteEntity {
 	"@context": string;
 	"@type": string;

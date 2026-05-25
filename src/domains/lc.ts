@@ -1,4 +1,5 @@
-import type { CompleteEntity } from "../types";
+import type { CompleteEntity, ExtractListPayload } from "../types";
+import { scrapeThreadDescription } from "../utils";
 
 const getData = () => {
 	const extracts = Array.from(
@@ -34,8 +35,9 @@ export const extractTagsLC = () => {
 	return mainEntity?.keywords ?? "";
 };
 
-export const extractDataLC = (fullData: boolean) => {
+export const getExtractPayloadLC = (): ExtractListPayload | null => {
 	const data = getData();
+	if (!data) return null;
 
 	const title =
 		document.querySelector<HTMLHeadingElement>(".p-title-value")?.innerText;
@@ -49,11 +51,38 @@ export const extractDataLC = (fullData: boolean) => {
 		"dl[data-field='version'] > dd",
 	)?.textContent;
 
-	const name = data?.headline?.match(/([^\[]*) /)?.[1] ?? "";
+	const name = data?.headline?.match(/([^[]*) /)?.[1] ?? "";
 
-	const { status, type, typeId } = scrapeGetTitle(title ?? "");
+	const { status, type } = scrapeGetTitle(title ?? "");
 
 	const link = id ? `https://lewdcorner.com/threads/${id}` : "";
+
+	return {
+		id,
+		domain: "LewdCorner",
+		name,
+		version: version ?? "",
+		status,
+		tags: data?.keywords ?? "",
+		type,
+		ac: false,
+		link,
+		image,
+		description: scrapeThreadDescription() ?? "",
+	};
+};
+
+export const extractDataLC = (fullData: boolean) => {
+	const payload = getExtractPayloadLC();
+	if (!payload) {
+		return JSON.stringify({});
+	}
+
+	const { id, name, version, status, type, link, image, description } = payload;
+	const data = getData();
+	const title =
+		document.querySelector<HTMLHeadingElement>(".p-title-value")?.innerText;
+	const { typeId } = scrapeGetTitle(title ?? "");
 
 	if (!fullData) {
 		return JSON.stringify(
@@ -68,6 +97,7 @@ export const extractDataLC = (fullData: boolean) => {
 				ac: false,
 				link,
 				image,
+				description,
 			},
 			null,
 			0,
@@ -76,14 +106,14 @@ export const extractDataLC = (fullData: boolean) => {
 
 	const developer =
 		document.querySelector('[data-field="Developer"] > dd')?.textContent ?? "";
-	const addedOn = Math.floor(new Date().getTime() / 1000);
+	const addedOn = Math.floor(Date.now() / 1000);
 	const lastUpdatedData = document.querySelector(
 		'[data-field="dategamerelease"] > dd',
 	)?.textContent;
 	const lastUpdated = lastUpdatedData
 		? Math.floor(new Date(lastUpdatedData).getTime() / 1000)
 		: 0;
-	const description =
+	const descriptionSql =
 		document
 			.querySelector(".message-body .bbWrapper > div")
 			?.textContent?.split("Overview:\n")[1]
@@ -125,7 +155,7 @@ export const extractDataLC = (fullData: boolean) => {
 		Number(ratingComponent?.querySelectorAll(".br-fractional").length ?? "0") /
 			2;
 
-	return `BEGIN TRANSACTION; UPDATE games SET name = "${name?.replaceAll('"', "''")}", version = "${version?.replaceAll('"', "''")}", developer = "${developer?.replaceAll('"', "''")}", last_updated = ${lastUpdated}, score = ${score ?? 0.0}, description = "${description?.replaceAll('"', "")}", tags = json_patch(tags, '[${tags}]') WHERE id = (SELECT id FROM games WHERE url = '${link}' LIMIT 1); INSERT INTO games SELECT (SELECT COALESCE(MIN(id) - 1, -1) FROM games), 1, "${name?.replaceAll('"', "''")}", "${version?.replaceAll('"', "''")}", "${developer?.replaceAll('"', "''")}", ${typeId}, 1, '${link}', ${addedOn}, ${lastUpdated}, 0, '', 0, ${score ?? 0.0}, 0, '', '', 0, 0, '[]', "${description?.replaceAll('"', "")}", "n/a", '[${tags}]', '[]', '', '', '[]', NULL, 0, '[]', 0, '[]', 0, '[]' WHERE NOT EXISTS (SELECT 1 FROM games WHERE url = '${link}'); COMMIT;`;
+	return `BEGIN TRANSACTION; UPDATE games SET name = "${name?.replaceAll('"', "''")}", version = "${version?.replaceAll('"', "''")}", developer = "${developer?.replaceAll('"', "''")}", last_updated = ${lastUpdated}, score = ${score ?? 0.0}, description = "${descriptionSql?.replaceAll('"', "")}", tags = json_patch(tags, '[${tags}]') WHERE id = (SELECT id FROM games WHERE url = '${link}' LIMIT 1); INSERT INTO games SELECT (SELECT COALESCE(MIN(id) - 1, -1) FROM games), 1, "${name?.replaceAll('"', "''")}", "${version?.replaceAll('"', "''")}", "${developer?.replaceAll('"', "''")}", ${typeId}, 1, '${link}', ${addedOn}, ${lastUpdated}, 0, '', 0, ${score ?? 0.0}, 0, '', '', 0, 0, '[]', "${descriptionSql?.replaceAll('"', "")}", "n/a", '[${tags}]', '[]', '', '', '[]', NULL, 0, '[]', 0, '[]', 0, '[]' WHERE NOT EXISTS (SELECT 1 FROM games WHERE url = '${link}'); COMMIT;`;
 };
 
 const scrapeGetTitle = (
@@ -194,11 +224,11 @@ const idByTagsName = {
 	bdsm: 34,
 	bestiality: 35,
 	"big ass": 36,
-  "big dick": 0,
+	"big dick": 0,
 	"big dicks": 0,
 	"big tits": 37,
 	blackmail: 38,
-  blowjob: 91,
+	blowjob: 91,
 	brothel: 99,
 	bukkake: 39,
 	"card game": 0,
@@ -251,7 +281,7 @@ const idByTagsName = {
 	handjob: 63,
 	harem: 64,
 	headpats: 0,
-  hebe: 75,
+	hebe: 75,
 	horror: 65,
 	humiliation: 66,
 	humor: 67,
@@ -273,7 +303,7 @@ const idByTagsName = {
 	masturbation: 79,
 	milf: 80,
 	"mind control": 81,
-  "mini games": 100,
+	"mini games": 100,
 	"mobile game": 82,
 	monster: 83,
 	"monster girl": 84,
@@ -311,7 +341,7 @@ const idByTagsName = {
 	"sex toys": 110,
 	"sexual content": 0,
 	"sexual harassment": 111,
-  sharing: 90,
+	sharing: 90,
 	shooter: 112,
 	shota: 113,
 	"side-scroller": 114,
@@ -320,7 +350,7 @@ const idByTagsName = {
 	sissification: 116,
 	slave: 117,
 	"sleep sex": 118,
-  "slice of life": 0,
+	"slice of life": 0,
 	"small tits": 0,
 	spanking: 119,
 	strategy: 120,
@@ -332,7 +362,7 @@ const idByTagsName = {
 	tentacles: 125,
 	"text based": 126,
 	titfuck: 127,
-  toddler: 75,
+	toddler: 75,
 	trainer: 128,
 	transformation: 129,
 	transgender: 57,
