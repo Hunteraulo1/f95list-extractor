@@ -5,7 +5,8 @@ export const extractTagsF95z = () => {
 	const tags = document.querySelectorAll(".tagItem") ?? [];
 
 	return Array.from(tags)
-		.map((tag) => tag.textContent)
+		.map((tag) => tag.textContent?.replace(/\s+/g, " ").trim() ?? "")
+		.filter(Boolean)
 		.join(", ");
 };
 
