@@ -2,7 +2,7 @@
 // ==UserScript==
 // @name         Tool Extractor
 // @namespace    http://tampermonkey.net/
-// @version      1.4.2
+// @version      1.5.2
 // @description  Extract all LC/F95z thread data
 // @author       Hunteraulo
 // @source       https://github.com/Hunteraulo1/f95list-extractor
