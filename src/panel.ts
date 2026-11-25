@@ -1,3 +1,4 @@
+import { extractorWrapper } from "./button";
 import { DASHBOARD_ORIGIN } from "./dashboardOrigin";
 import {
 	extractData,
@@ -58,10 +59,8 @@ const addToList = () => {
 
 export const panel = () => {
 	panelElement.className = "extractor-panel";
-	panelElement.style.marginTop = isF95z() ? "8px" : "14px";
 
-	const nav = document.querySelector("nav");
-	nav?.prepend(panelElement);
+	extractorWrapper.append(panelElement);
 
 	closeButton(panelElement);
 	button("Copier les tags", extractTags);
