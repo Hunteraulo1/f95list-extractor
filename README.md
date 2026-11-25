@@ -67,9 +67,27 @@ src/
 
 ## Release
 
-Le développement se fait sur la branche `dev`. Au merge d'une pull request dans `main`, la CI ([`build.yml`](.github/workflows/build.yml)) :
+Le développement se fait sur la branche `dev`. La publication d'une nouvelle version est automatisée :
 
-1. build le script et commit `dist/toolExtractor.user.js` sur `main` ;
-2. crée une release GitHub `v<version>` à partir de la version du `package.json`.
+1. **Bumper la version** dans `package.json` (ex. `1.5.0` → `1.5.1`) en suivant [SemVer](https://semver.org/lang/fr/).
+2. **Commit et push sur `dev`** :
+   ```bash
+   git commit -am ":bookmark: v1.5.1"
+   git push origin dev
+   ```
+3. **PR automatique** : le workflow [`release-pr.yml`](.github/workflows/release-pr.yml) détecte le changement de version et ouvre une PR `dev → main` intitulée `:bookmark: v1.5.1` (ou met à jour la PR déjà ouverte).
+4. **Merger la PR** : le workflow [`build.yml`](.github/workflows/build.yml) build le script, commit `dist/toolExtractor.user.js` sur `main` et crée la release GitHub `v1.5.1`.
 
-Penser donc à bumper la version dans `package.json` avant de merger.
+Un push sur `dev` sans changement de version (ex. mise à jour de dépendances) ne crée pas de PR.
+
+### Mise à jour chez les utilisateurs
+
+Le script installé pointe (`@updateURL`) vers `dist/toolExtractor.user.js` sur `main`. Tampermonkey vérifie régulièrement ce fichier et installe la mise à jour dès que la `@version` (reprise du `package.json`) est supérieure à celle installée : c'est pour ça que le bump de version est indispensable.
+
+Pour forcer la vérification : cliquer sur l'icône Tampermonkey → *Rechercher des mises à jour des scripts utilisateur*.
+
+### Secrets GitHub requis
+
+| Secret | Usage |
+| --- | --- |
+| `PERSONAL_ACCESS_TOKEN` | Création de la PR de release et push du build sur `main` (droits *Contents* et *Pull requests* en écriture) |
