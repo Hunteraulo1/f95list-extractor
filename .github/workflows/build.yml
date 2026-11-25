@@ -40,6 +40,8 @@ jobs:
         
       - name: Build script
         run: bun run build
+        env:
+          DASHBOARD_ORIGIN: ${{ secrets.DASHBOARD_ORIGIN }}
         
       - name: Commit build
         run: |

@@ -91,3 +91,4 @@ Pour forcer la vérification : cliquer sur l'icône Tampermonkey → *Rechercher
 | Secret | Usage |
 | --- | --- |
 | `PERSONAL_ACCESS_TOKEN` | Création de la PR de release et push du build sur `main` (droits *Contents* et *Pull requests* en écriture) |
+| `DASHBOARD_ORIGIN` | URL du dashboard injectée au build de la release |
