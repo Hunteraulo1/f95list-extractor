@@ -1,0 +1,64 @@
+name: Release PR
+
+permissions:
+  contents: read
+  pull-requests: write
+
+on:
+  push:
+    branches:
+      - dev
+    paths:
+      - package.json
+
+jobs:
+  release-pr:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          fetch-depth: 0
+
+      - name: Detect version bump
+        id: version
+        env:
+          BEFORE: ${{ github.event.before }}
+        run: |
+          CURRENT=$(node -p "require('./package.json').version")
+          if git cat-file -e "$BEFORE" 2>/dev/null; then
+            PREVIOUS=$(git show "$BEFORE:package.json" | node -p "JSON.parse(require('fs').readFileSync(0)).version")
+          else
+            PREVIOUS=""
+          fi
+          echo "current=$CURRENT" >> "$GITHUB_OUTPUT"
+          if [ "$CURRENT" != "$PREVIOUS" ]; then
+            echo "bumped=true" >> "$GITHUB_OUTPUT"
+            echo "Version: $PREVIOUS -> $CURRENT"
+          else
+            echo "bumped=false" >> "$GITHUB_OUTPUT"
+            echo "Version inchangée ($CURRENT)"
+          fi
+
+      - name: Create or update PR dev -> main
+        if: steps.version.outputs.bumped == 'true'
+        env:
+          GH_TOKEN: ${{ secrets.PERSONAL_ACCESS_TOKEN }}
+          VERSION: ${{ steps.version.outputs.current }}
+        run: |
+          TITLE=":bookmark: v$VERSION"
+          LAST_TAG=$(git describe --tags --abbrev=0 origin/main 2>/dev/null || echo "")
+          BODY="Release automatique de la version **v$VERSION**."
+          if [ -n "$LAST_TAG" ]; then
+            BODY="$BODY
+
+          **Changements**: https://github.com/${{ github.repository }}/compare/$LAST_TAG...dev"
+          fi
+
+          PR=$(gh pr list --base main --head dev --state open --json number -q '.[0].number')
+          if [ -n "$PR" ]; then
+            gh pr edit "$PR" --title "$TITLE" --body "$BODY"
+            echo "PR #$PR mise à jour"
+          else
+            gh pr create --base main --head dev --title "$TITLE" --body "$BODY"
+          fi

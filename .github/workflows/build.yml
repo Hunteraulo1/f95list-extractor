@@ -16,7 +16,7 @@ jobs:
     runs-on: ubuntu-latest
     
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
         with:
           fetch-depth: 0
           token: ${{ secrets.PERSONAL_ACCESS_TOKEN }}
@@ -40,6 +40,8 @@ jobs:
         
       - name: Build script
         run: bun run build
+        env:
+          DASHBOARD_ORIGIN: ${{ secrets.DASHBOARD_ORIGIN }}
         
       - name: Commit build
         run: |
